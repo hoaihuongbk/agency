@@ -1,0 +1,67 @@
+﻿<?xml version="1.0"?>
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=169433
+  -->
+<configuration>
+  <connectionStrings>
+    <add name="Agency" connectionString="server=DESKTOP-6CH829L\SQLEXPRESS;database=Agency;uid=agency;pwd=YjLeH3Hpob;"/>
+    <add name="Sentinel0" connectionString="redis://127.0.0.1:26380?db=0" />
+    <add name="Sentinel1" connectionString="redis://127.0.0.1:26381?db=0" />
+    <add name="Sentinel2" connectionString="redis://127.0.0.1:26382?db=0" />
+  </connectionStrings>
+  <appSettings>
+    <add key="rootDomain" value="//-- your root domain --" />
+    <add key="slackIncomingWebHookUrl" value="//--Slack hook Url here --" />
+    <add key="AppVersion" value="1" />
+    <add key="apikey.RequireSecureConnection" value="false" />
+    <add key="DebugMode" value="true" />
+    <add key="receipt.code.len" value="6" />
+  </appSettings>
+  <!--
+    For a description of web.config changes see http://go.microsoft.com/fwlink/?LinkId=235367.
+
+    The following attributes can be set on the <httpRuntime> tag.
+      <system.Web>
+        <httpRuntime targetFramework="4.5" />
+      </system.Web>
+  -->
+  <system.web>
+    <customErrors mode="Off"/>
+    <compilation debug="true" targetFramework="4.5"/>
+    <httpRuntime targetFramework="4.5"/>
+    <httpHandlers>
+      <add verb="POST,GET,HEAD" path="elmah.axd" type="Elmah.ErrorLogPageFactory, Elmah" />
+      <add path="*" type="ServiceStack.HttpHandlerFactory, ServiceStack" verb="*"/>
+    </httpHandlers>
+    <httpModules>
+      <add name="ErrorLog" type="Elmah.ErrorLogModule, Elmah" />
+    </httpModules>
+    <pages controlRenderingCompatibilityVersion="4.0"/>
+  </system.web>
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true">
+      <add name="Elmah.ErrorLog" type="Elmah.ErrorLogModule, Elmah" preCondition="managedHandler" />
+    </modules>
+    <validation validateIntegratedModeConfiguration="false"/>
+    <urlCompression doStaticCompression="true" doDynamicCompression="false"/>
+    <handlers>
+      <add name="Elmah" path="elmah.axd" verb="POST,GET,HEAD" type="Elmah.ErrorLogPageFactory, Elmah" preCondition="integratedMode" />
+      <add path="*" name="ServiceStack.Factory" type="ServiceStack.HttpHandlerFactory, ServiceStack" verb="*" preCondition="integratedMode" resourceType="Unspecified" allowPathInfo="true"/>
+    </handlers>
+    <httpProtocol>
+      <customHeaders>
+        <remove name="X-Powered-By" />
+      </customHeaders>
+    </httpProtocol>
+    <rewrite>
+      <outboundRules rewriteBeforeCache="true">
+        <rule name="Remove_RESPONSE_Server">
+          <match serverVariable="RESPONSE_Server" pattern=".+" />
+          <action type="Rewrite" value="Agency" />
+        </rule>
+      </outboundRules>
+      <rules />
+    </rewrite>
+  </system.webServer>
+</configuration>
