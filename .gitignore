@@ -41,5 +41,4 @@
 /Agency/Web.config
 /Agency/Web.Debug.config
 /Agency/Properties/PublishProfiles
-
-/.*
+/.idea
