@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Agency.RepositoryInterface
+﻿namespace Agency.RepositoryInterface
 {
     public interface ITicketRepository
     {

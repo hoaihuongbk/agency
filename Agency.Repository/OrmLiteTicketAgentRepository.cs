@@ -1,7 +1,5 @@
 ﻿using Agency.RepositoryInterface;
 using PT.Common.Repository;
-using ServiceStack;
-using ServiceStack.Auth;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;

@@ -10,28 +10,28 @@ namespace Sima.Common.Validation
     }
     public class TimeStringValidator : ITimeStringValidator
     {
-        private string pattern { get; set; }
+        private string Pattern { get; set; }
 
         public TimeStringValidator()
         {
-            pattern = CommonConstant.Pattern.GetValueOrDefault("time");
+            Pattern = CommonConstant.Pattern.GetValueOrDefault("time");
         }
-        public TimeStringValidator(string _pattern)
+        public TimeStringValidator(string pattern)
         {
-            pattern = _pattern;
+            Pattern = pattern;
         }
         public TimeStringValidator(IAppSettings appSettings)
         {
-            pattern = appSettings.Get("time.pattern", CommonConstant.Pattern.GetValueOrDefault("time"));
+            Pattern = appSettings.Get("time.pattern", CommonConstant.Pattern.GetValueOrDefault("time"));
         }
 
         public bool ValidTimeString(string timeStr, bool required = false)
         {
             if (required)
             {
-                return !string.IsNullOrEmpty(timeStr) && Regex.IsMatch(timeStr, pattern);
+                return !string.IsNullOrEmpty(timeStr) && Regex.IsMatch(timeStr, Pattern);
             }
-            return string.IsNullOrEmpty(timeStr) || Regex.IsMatch(timeStr, pattern);
+            return string.IsNullOrEmpty(timeStr) || Regex.IsMatch(timeStr, Pattern);
         }
     }
 }

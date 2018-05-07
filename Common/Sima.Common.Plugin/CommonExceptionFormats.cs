@@ -13,8 +13,9 @@ namespace Sima.Common.Plugin
             appHost.UncaughtExceptionHandlers.Add((req, res, operationName, ex) =>
             {
                 var logger = appHost.GetContainer().Resolve<ILog>();
-                logger.Error(string.Format("UncaughtException: OperationName: {0} | Request: {1} | Response: {2} | ErrorMessage: {3}", operationName, JsonSerializer.SerializeToString(req), JsonSerializer.SerializeToString(res), ex.Message));
-                res.Write("Error: {0}".Fmt(ex.Message));
+                logger.Error(
+                    $"UncaughtException: OperationName: {operationName} | Request: {JsonSerializer.SerializeToString(req)} | Response: {JsonSerializer.SerializeToString(res)} | ErrorMessage: {ex.Message}");
+                res.WriteAsync("Error: {0}".Fmt(ex.Message));
                 res.EndRequest(true);
             });
         }

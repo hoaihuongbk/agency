@@ -1,6 +1,4 @@
-﻿using ServiceStack;
-
-namespace Sima.Common.Model.Types
+﻿namespace Sima.Common.Model.Types
 {
     public class BasicResponse : BaseResponse
     {

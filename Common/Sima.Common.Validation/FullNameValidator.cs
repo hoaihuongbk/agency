@@ -10,8 +10,8 @@ namespace Sima.Common.Validation
     public class FullNameValidator : IFullNameValidator
     {
         private const string ExcludeSymbol = @"[\@\%\/\\\&\?\,\;\:\!\-\>\<\=]+";
-        private const int minLen = 1;
-        private const int maxLen = 128;
+        private const int MinLen = 1;
+        private const int MaxLen = 128;
 
         public bool ValidFullName(string fullName, bool required = false)
         {
@@ -24,7 +24,7 @@ namespace Sima.Common.Validation
                 }
             } else
             {
-                if (fullName.Length < minLen || fullName.Length > maxLen)
+                if (fullName.Length < MinLen || fullName.Length > MaxLen)
                 {
                     validated = false;
                 }

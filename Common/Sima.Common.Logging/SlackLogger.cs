@@ -6,31 +6,31 @@ namespace Sima.Common.Logging
 {
     public class SlackLogger : ILog
     {
-        public string incomingWebHookUrl { get; set; }
+        public string IncomingWebHookUrl { get; set; }
 
         public SlackLogger(string incomingWebHookUrl)
         {
-            this.incomingWebHookUrl = incomingWebHookUrl;
+            this.IncomingWebHookUrl = incomingWebHookUrl;
         }
 
 
         public void Info(object message)
         {
-            incomingWebHookUrl.PostJsonToUrl(new { text = "INFO:" + message.ToString() });
+            IncomingWebHookUrl.PostJsonToUrl(new { text = "INFO:" + message });
         }
 
         public void Info(object message, Exception exception)
         {
-            incomingWebHookUrl.PostJsonToUrl(new { text = "INFO:" + message.ToString() + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace });
+            IncomingWebHookUrl.PostJsonToUrl(new { text = "INFO:" + message + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace });
         }
         public void Debug(object message)
         {
-            incomingWebHookUrl.PostJsonToUrl(new { text = "Debug:" + message.ToString() });
+            IncomingWebHookUrl.PostJsonToUrl(new { text = "Debug:" + message });
         }
 
         public void Debug(object message, Exception exception)
         {
-            incomingWebHookUrl.PostJsonToUrl(new { text = "Debug:" + message.ToString() + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace });
+            IncomingWebHookUrl.PostJsonToUrl(new { text = "Debug:" + message + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace });
         }
 
         public void DebugFormat(string format, params object[] args)
@@ -40,12 +40,12 @@ namespace Sima.Common.Logging
 
         public void Error(object message)
         {
-            incomingWebHookUrl.PostJsonToUrl(new { text = "Error:" + message.ToString() });
+            IncomingWebHookUrl.PostJsonToUrl(new { text = "Error:" + message });
         }
 
         public void Error(object message, Exception exception)
         {
-            incomingWebHookUrl.PostJsonToUrl(new { text = "Error:" + message.ToString() + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace });
+            IncomingWebHookUrl.PostJsonToUrl(new { text = "Error:" + message + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace });
         }
 
         public void ErrorFormat(string format, params object[] args)
@@ -55,17 +55,17 @@ namespace Sima.Common.Logging
 
         public void Fatal(object message)
         {
-            incomingWebHookUrl.PostJsonToUrl(new
+            IncomingWebHookUrl.PostJsonToUrl(new
             {
-                text = "Fatal:" + message.ToString()
+                text = "Fatal:" + message
             });
         }
 
         public void Fatal(object message, Exception exception)
         {
-            incomingWebHookUrl.PostJsonToUrl(new
+            IncomingWebHookUrl.PostJsonToUrl(new
             {
-                text = "Fatal:" + message.ToString() + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace
+                text = "Fatal:" + message + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace
             });
         }
 
@@ -82,17 +82,17 @@ namespace Sima.Common.Logging
 
         public void Warn(object message)
         {
-            incomingWebHookUrl.PostJsonToUrl(new
+            IncomingWebHookUrl.PostJsonToUrl(new
             {
-                text = "Warn:" + message.ToString()
+                text = "Warn:" + message
             });
         }
 
         public void Warn(object message, Exception exception)
         {
-            incomingWebHookUrl.PostJsonToUrl(new
+            IncomingWebHookUrl.PostJsonToUrl(new
             {
-                text = "Warn:" + message.ToString() + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace
+                text = "Warn:" + message + Environment.NewLine + " StackTrace:" + Environment.NewLine + exception.StackTrace
             });
         }
 

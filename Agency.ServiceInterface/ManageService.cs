@@ -10,18 +10,18 @@ namespace Agency.ServiceInterface
     [RequiredRole("Admin")]
     public class ManageService : AuthOnlyService
     {
-        public IOperatorAgentRepository oaRepo { get; set; }
+        public IOperatorAgentRepository OaRepo { get; set; }
 
         public object Post(AssignOperatorAgent request)
         {
-            var eoa = oaRepo.GetOperatorAgent(request.OperatorId, request.AgentId);
+            var eoa = OaRepo.GetOperatorAgent(request.OperatorId, request.AgentId);
             IOperatorAgent oa;
             if (eoa == null)
             {
-                oa = oaRepo.CreateOperatorAgent(ToCreateOA(request));
+                oa = OaRepo.CreateOperatorAgent(ToCreateOa(request));
             } else
             {
-                oa = oaRepo.UpdateOperatorAgent(eoa, ToUpdateStatusOA(eoa, (int)DataStatus.Enabled));
+                oa = OaRepo.UpdateOperatorAgent(eoa, ToUpdateStatusOa(eoa, (int)DataStatus.Enabled));
             }
             return new AssignOperatorAgentResponse()
             {
@@ -31,27 +31,27 @@ namespace Agency.ServiceInterface
 
         public object Post(RemoveOperatorAgent request)
         {
-            var eoa = oaRepo.GetOperatorAgent(request.OperatorId, request.AgentId);
+            var eoa = OaRepo.GetOperatorAgent(request.OperatorId, request.AgentId);
             if(eoa == null)
             {
 //                throw new System.Exception(ManageMessage.OADoesNotExist);
             }
-            var oa = oaRepo.UpdateOperatorAgent(eoa, ToUpdateStatusOA(eoa, (int)DataStatus.Disabled));
+            var oa = OaRepo.UpdateOperatorAgent(eoa, ToUpdateStatusOa(eoa, (int)DataStatus.Disabled));
             return new AssignOperatorAgentResponse()
             {
                 Status = (int)CommonStatus.Success
             };
         }
 
-        private IOperatorAgent ToCreateOA(AssignOperatorAgent request)
+        private IOperatorAgent ToCreateOa(AssignOperatorAgent request)
         {
             var oa = request.ConvertTo<OperatorAgent>();
             oa.Status = (int)DataStatus.Enabled;
             return oa;
         }
-        private IOperatorAgent ToUpdateStatusOA(IOperatorAgent existingOA, int status)
+        private IOperatorAgent ToUpdateStatusOa(IOperatorAgent existingOa, int status)
         {
-            var oa = ((OperatorAgent)existingOA).CreateCopy();
+            var oa = ((OperatorAgent)existingOa).CreateCopy();
             oa.Status = status;
             return oa;
         }

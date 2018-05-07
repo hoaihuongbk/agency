@@ -13,9 +13,9 @@ namespace Agency.ServiceInterface
    
     public class TicketService : AuthOnlyService
     {
-        public ITicketRepository ticketRepo { get; set; }
-        public ITicketAgentRepository ticketAgentRepo { get; set; }
-        public ITicketStatusRepository ticketStatusRepo { get; set; }
+        public ITicketRepository TicketRepo { get; set; }
+        public ITicketAgentRepository TicketAgentRepo { get; set; }
+        public ITicketStatusRepository TicketStatusRepo { get; set; }
 
         [RequiredRole("Agent")]
         public object Any(GetTickets request)
@@ -25,7 +25,7 @@ namespace Agency.ServiceInterface
             {
 //                throw new Exception(TicketMessage.InvalidDepartureDate);
             }
-            var tickets = ticketAgentRepo.GetTickets(Convert.ToInt32(UserSession.UserAuthId), departureDate, request.NumRowPerPage, request.Page).ToList();
+            var tickets = TicketAgentRepo.GetTickets(Convert.ToInt32(UserSession.UserAuthId), departureDate, request.NumRowPerPage, request.Page).ToList();
             if (tickets.IsNullOrEmpty())
             {
 //                throw new Exception(TicketMessage.TicketDoesNotFound);
@@ -38,7 +38,7 @@ namespace Agency.ServiceInterface
                 var ticket = c.ConvertTo<ServiceModel.Types.TicketAgent>();
                 if(ticket.Status.Equals((int)TicketConstant.Available))
                 {
-                    var status = ticketStatusRepo.GetTicketStatus(c.OperatorId, c.Code, departureDate, c.DepartureTime);
+                    var status = TicketStatusRepo.GetTicketStatus(c.OperatorId, c.Code, departureDate, c.DepartureTime);
                     switch (status.Status)
                     {
                         case (int)TicketStatusConstant.Available:
@@ -63,7 +63,7 @@ namespace Agency.ServiceInterface
         [RequiredRole("Operator")]
         public object Post(AddTicket request)
         {
-            var ticket = ticketRepo.CreateTicket(ToCreateTicket(request));
+            var ticket = TicketRepo.CreateTicket(ToCreateTicket(request));
 
             return new AddTicketResponse()
             {
@@ -75,12 +75,12 @@ namespace Agency.ServiceInterface
         [RequiredRole("Operator")]
         public object Post(UpdateTicket request)
         {
-            var existingTicket = ticketRepo.GetTicket(request.Id);
+            var existingTicket = TicketRepo.GetTicket(request.Id);
             if(existingTicket == null)
             {
 //                throw new Exception(TicketMessage.TicketDoesNotFound);
             }
-            var ticket = ticketRepo.UpdateTicket(existingTicket, ToUpdateTicket(existingTicket, request));
+            var ticket = TicketRepo.UpdateTicket(existingTicket, ToUpdateTicket(existingTicket, request));
 
             return new AddTicketResponse()
             {

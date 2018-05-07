@@ -11,27 +11,27 @@ namespace Sima.Common.Validation
 
     public class PhoneValidator : IPhoneValidator
     {
-        private string pattern { get; set; }
+        private string Pattern { get; set; }
         public PhoneValidator()
         {
-            pattern = CommonConstant.Pattern.GetValueOrDefault("phone");
+            Pattern = CommonConstant.Pattern.GetValueOrDefault("phone");
         }
-        public PhoneValidator(string _pattern)
+        public PhoneValidator(string pattern)
         {
-            pattern = _pattern;
+            Pattern = pattern;
         }
         public PhoneValidator(IAppSettings appSettings)
         {
-            pattern = appSettings.Get("phone.pattern", CommonConstant.Pattern.GetValueOrDefault("phone"));
+            Pattern = appSettings.Get("phone.pattern", CommonConstant.Pattern.GetValueOrDefault("phone"));
         }
 
         public bool ValidPhone(string phone, bool required = false)
         {
             if (required)
             {
-                return Regex.IsMatch(phone, pattern);
+                return Regex.IsMatch(phone, Pattern);
             }
-            return string.IsNullOrEmpty(phone) || Regex.IsMatch(phone, pattern);
+            return string.IsNullOrEmpty(phone) || Regex.IsMatch(phone, Pattern);
         }
     }
 }

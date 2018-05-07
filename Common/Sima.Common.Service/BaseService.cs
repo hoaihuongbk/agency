@@ -7,7 +7,7 @@ namespace Sima.Common.Service
     public abstract class BaseService : ServiceStack.Service
     {
         public AuthUserSession UserSession => SessionAs<AuthUserSession>();
-        public IDbConnectionFactory dbFactory { get; set; }
+        public IDbConnectionFactory DbFactory { get; set; }
         public ILog Log { get; set; }
 
 //        protected string RenderRazorViewToString(string viewName, object model)

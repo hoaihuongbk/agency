@@ -18,10 +18,7 @@ namespace Sima.Common.Plugin
                 System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
 
             });
-            appHost.GlobalRequestFilters.Add((req, res, requestDto) =>
-            {
-                SessionFeature.AddSessionIdToRequestFilter(req, res, requestDto);
-            });
+            appHost.GlobalRequestFilters.Add(SessionFeature.AddSessionIdToRequestFilter);
         }
     }
 }

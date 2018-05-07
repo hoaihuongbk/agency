@@ -7,16 +7,16 @@ namespace Agency.Repository
 {
     public class RedisTicketStatusRepository : ITicketStatusRepository
     {
-        private readonly IRedisClientsManager clientManager;
+        private readonly IRedisClientsManager _clientManager;
 
-        public RedisTicketStatusRepository(IRedisClientsManager _clientManager)
+        public RedisTicketStatusRepository(IRedisClientsManager clientManager)
         {
-            clientManager = _clientManager;
+            this._clientManager = clientManager;
         }
 
         public ITicketStatus GetTicketStatus(int operatorId, string code, DateTime departureDate, string departureTime)
         {
-            using(var client = clientManager.GetClient())
+            using(var client = _clientManager.GetClient())
             {
                 var key = RedisTicketStatusExtensions.GetTicketStatusKey(operatorId, departureDate, departureTime);
                 var value = client.GetValueFromHash(key, code.Trim());
@@ -29,7 +29,7 @@ namespace Agency.Repository
 
         public ITicketStatus UpdateTicketStatus(int operatorId, string code, DateTime departureDate, string departureTime, int status)
         {
-            using (var client = clientManager.GetClient())
+            using (var client = _clientManager.GetClient())
             {
                 var key = RedisTicketStatusExtensions.GetTicketStatusKey(operatorId, departureDate, departureTime);
                 client.SetEntryInHash(key, code.Trim(), "{0}".Fmt(status));

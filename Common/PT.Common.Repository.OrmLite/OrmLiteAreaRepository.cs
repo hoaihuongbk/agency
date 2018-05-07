@@ -4,7 +4,6 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace PT.Common.Repository.OrmLite
@@ -19,7 +18,7 @@ namespace PT.Common.Repository.OrmLite
     public class OrmLiteAreaRepository<TArea> : OrmLiteBaseRepository, IAreaRepository, IRequiresSchema, IClearable
        where TArea : class, IArea
     {
-        public OrmLiteAreaRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
+        protected OrmLiteAreaRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
             : base(dbFactory, namedConnnection)
         {
 

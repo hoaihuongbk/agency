@@ -20,20 +20,20 @@ namespace Agency.Repository
         
 		 where TReceipt : class, IReceipt   		
 		    {
-		private readonly IDbConnectionFactory dbFactory;
+		private readonly IDbConnectionFactory _dbFactory;
         public string NamedConnection { get; private set; }
 		
 		public OrmLiteReceiptRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
         {
-            this.dbFactory = dbFactory;
+            this._dbFactory = dbFactory;
             this.NamedConnection = namedConnnection;
         }
 
         protected IDbConnection OpenDbConnection()
         {
             return this.NamedConnection != null
-                ? dbFactory.OpenDbConnection(NamedConnection)
-                : dbFactory.OpenDbConnection();
+                ? _dbFactory.OpenDbConnection(NamedConnection)
+                : _dbFactory.OpenDbConnection();
         }
 
         protected void Exec(Action<IDbConnection> fn)

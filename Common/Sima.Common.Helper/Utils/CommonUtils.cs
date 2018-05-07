@@ -1,5 +1,4 @@
 ﻿using Sima.Common.Constant;
-using Sima.Common.Model;
 using Sima.Common.Model.Types;
 using System;
 using System.Text.RegularExpressions;
@@ -24,7 +23,7 @@ namespace Sima.Common.Helper
             foreach (var c in asciiString)
             {
                 int tmp = c;
-                hex += String.Format("{0:x2}", Convert.ToUInt32(tmp.ToString()));
+                hex += $"{Convert.ToUInt32(tmp.ToString()):x2}";
             }
             return hex;
         }

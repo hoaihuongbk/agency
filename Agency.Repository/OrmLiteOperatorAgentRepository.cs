@@ -6,33 +6,38 @@ using ServiceStack.OrmLite;
 using System;
 using System.Data;
 using System.Linq;
+
 namespace Agency.Repository
 {
-	public class OrmLiteOperatorAgentRepository : OrmLiteOperatorAgentRepository<OperatorAgent>
+    public class OrmLiteOperatorAgentRepository : OrmLiteOperatorAgentRepository<OperatorAgent>
     {
-        public OrmLiteOperatorAgentRepository(IDbConnectionFactory dbFactory) : base(dbFactory) { }
+        public OrmLiteOperatorAgentRepository(IDbConnectionFactory dbFactory) : base(dbFactory)
+        {
+        }
+
         public OrmLiteOperatorAgentRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
-            : base(dbFactory, namedConnnection) { }
+            : base(dbFactory, namedConnnection)
+        {
+        }
     }
 
-	public class OrmLiteOperatorAgentRepository<TOperatorAgent > : IOperatorAgentRepository, IRequiresSchema, IClearable
-        
-		 where TOperatorAgent : class, IOperatorAgent   		
-		    {
-		private readonly IDbConnectionFactory dbFactory;
+    public class OrmLiteOperatorAgentRepository<TOperatorAgent> : IOperatorAgentRepository, IRequiresSchema, IClearable
+        where TOperatorAgent : class, IOperatorAgent
+    {
+        private readonly IDbConnectionFactory _dbFactory;
         public string NamedConnection { get; private set; }
-		
-		public OrmLiteOperatorAgentRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
+
+        protected OrmLiteOperatorAgentRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
         {
-            this.dbFactory = dbFactory;
+            this._dbFactory = dbFactory;
             this.NamedConnection = namedConnnection;
         }
 
         protected IDbConnection OpenDbConnection()
         {
             return this.NamedConnection != null
-                ? dbFactory.OpenDbConnection(NamedConnection)
-                : dbFactory.OpenDbConnection();
+                ? _dbFactory.OpenDbConnection(NamedConnection)
+                : _dbFactory.OpenDbConnection();
         }
 
         protected void Exec(Action<IDbConnection> fn)
@@ -51,73 +56,67 @@ namespace Agency.Repository
             }
         }
 
-		public virtual IOperatorAgent CreateOperatorAgent(IOperatorAgent newOperatorAgent)
+        public virtual IOperatorAgent CreateOperatorAgent(IOperatorAgent newOperatorAgent)
         {
             return Exec(db =>
             {
                 AssertNoExistingOperatorAgent(db, newOperatorAgent);
 
-				newOperatorAgent.Status = 1;
+                newOperatorAgent.Status = 1;
                 newOperatorAgent.IsPrgCreatedDate = DateTime.Now;
                 newOperatorAgent.IsPrgUpdatedDate = newOperatorAgent.IsPrgCreatedDate;
 
-                db.Save((TOperatorAgent)newOperatorAgent);
+                db.Save((TOperatorAgent) newOperatorAgent);
 
                 newOperatorAgent = db.SingleById<TOperatorAgent>(newOperatorAgent.Id);
                 return newOperatorAgent;
             });
         }
 
-		protected void AssertNoExistingOperatorAgent(IDbConnection db, IOperatorAgent newOperatorAgent, IOperatorAgent exceptForExistingOperatorAgent = null)
+        protected void AssertNoExistingOperatorAgent(IDbConnection db, IOperatorAgent newOperatorAgent,
+            IOperatorAgent exceptForExistingOperatorAgent = null)
         {
             var existingOperatorAgent = GetOperatorAgent(newOperatorAgent.Id);
             if (existingOperatorAgent != null
-                && (exceptForExistingOperatorAgent == null || existingOperatorAgent.Id != exceptForExistingOperatorAgent.Id))
+                && (exceptForExistingOperatorAgent == null ||
+                    existingOperatorAgent.Id != exceptForExistingOperatorAgent.Id))
                 throw new ArgumentException("OperatorAgent is already exists");
         }
 
-		public virtual void DeleteOperatorAgent(int id)
+        public virtual void DeleteOperatorAgent(int id)
         {
             Exec(db =>
             {
                 using (var trans = db.OpenTransaction())
                 {
-					var item = GetOperatorAgent(id);
-					
+                    var item = GetOperatorAgent(id);
+
                     item.Status = 0;
                     item.IsPrgUpdatedDate = DateTime.Now;
-                    db.Save((TOperatorAgent)item);
+                    db.Save((TOperatorAgent) item);
 
                     trans.Commit();
                 }
             });
         }
 
-		public virtual IOperatorAgent GetOperatorAgent(int id)
+        public virtual IOperatorAgent GetOperatorAgent(int id)
         {
-            return Exec(db =>
-            {
-                return db.Select<TOperatorAgent>(c => c.Id == id).FirstOrDefault();
-            });
+            return Exec(db => { return db.Select<TOperatorAgent>(c => c.Id == id).FirstOrDefault(); });
         }
 
-		public virtual void InitSchema()
+        public virtual void InitSchema()
         {
-            Exec(db =>
-            {
-									 db.CreateTableIfNotExists<TOperatorAgent>();
-				            });
+            Exec(db => { db.CreateTableIfNotExists<TOperatorAgent>(); });
         }
 
-		public virtual void DropAndReCreateTables()
+        public virtual void DropAndReCreateTables()
         {
-            Exec(db =>
-            {
-									 db.DropAndCreateTable<TOperatorAgent>();
-				            });
+            Exec(db => { db.DropAndCreateTable<TOperatorAgent>(); });
         }
 
-		public virtual IOperatorAgent UpdateOperatorAgent(IOperatorAgent existingOperatorAgent, IOperatorAgent newOperatorAgent)
+        public virtual IOperatorAgent UpdateOperatorAgent(IOperatorAgent existingOperatorAgent,
+            IOperatorAgent newOperatorAgent)
         {
             return Exec(db =>
             {
@@ -125,16 +124,14 @@ namespace Agency.Repository
 
                 using (var trans = db.OpenTransaction())
                 {
-					
                     newOperatorAgent.Id = existingOperatorAgent.Id;
                     newOperatorAgent.IsPrgCreatedDate = existingOperatorAgent.IsPrgCreatedDate;
                     newOperatorAgent.IsPrgUpdatedDate = DateTime.Now;
 
-                    db.Save((TOperatorAgent)newOperatorAgent);
+                    db.Save((TOperatorAgent) newOperatorAgent);
 
                     trans.Commit();
                 }
-
 
 
                 return newOperatorAgent;
@@ -143,17 +140,15 @@ namespace Agency.Repository
 
         public void Clear()
         {
-            Exec(db =>
-            {
-									 db.DeleteAll<TOperatorAgent>();
-				            });
+            Exec(db => { db.DeleteAll<TOperatorAgent>(); });
         }
 
         public IOperatorAgent GetOperatorAgent(int operatorId, int agentId)
         {
             return Exec(db =>
             {
-                return db.Select<TOperatorAgent>(c => c.OperatorId == operatorId && c.AgentId == agentId).FirstOrDefault();
+                return db.Select<TOperatorAgent>(c => c.OperatorId == operatorId && c.AgentId == agentId)
+                    .FirstOrDefault();
             });
         }
     }

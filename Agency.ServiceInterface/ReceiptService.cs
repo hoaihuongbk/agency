@@ -12,9 +12,9 @@ namespace Agency.ServiceInterface
     [RequiredRole("Agent")]
     public class ReceiptService : AuthOnlyService
     {
-        public IReceiptRepository receiptRepo { get; set; }
-        public ITicketRepository ticketRepo { get; set; }
-        public ITicketStatusRepository ticketStatusRepo { get; set; }
+        public IReceiptRepository ReceiptRepo { get; set; }
+        public ITicketRepository TicketRepo { get; set; }
+        public ITicketStatusRepository TicketStatusRepo { get; set; }
 
         public object Post(SubmitReceipt request)
         {
@@ -53,7 +53,7 @@ namespace Agency.ServiceInterface
         private IReceipt SubmitReceipt(SubmitReceipt request)
         {
             //Check ticket is available
-            var ticket = ticketRepo.GetTicket(request.TicketId);
+            var ticket = TicketRepo.GetTicket(request.TicketId);
             if (ticket == null)
             {
 //                throw new Exception(TicketMessage.TicketDoesNotFound);
@@ -71,7 +71,7 @@ namespace Agency.ServiceInterface
             }
 
             //Check ticket does not booking before
-            var status = ticketStatusRepo.GetTicketStatus(ticket.UserAuthId, ticket.Code, departureDate, ticket.DepartureTime);
+            var status = TicketStatusRepo.GetTicketStatus(ticket.UserAuthId, ticket.Code, departureDate, ticket.DepartureTime);
             if (status.Status != (int)TicketStatusConstant.Available)
             {
 //                throw new Exception(TicketMessage.TicketIsNotAvail);
@@ -86,45 +86,45 @@ namespace Agency.ServiceInterface
             newReceipt.Status = (int)ReceiptStatusConstant.Submited;
 
             //Generate new code
-            var code = receiptRepo.GenerateNewCode(ConfigUtils.GetAppSetting("receipt.code.len", 6));
+            var code = ReceiptRepo.GenerateNewCode(ConfigUtils.GetAppSetting("receipt.code.len", 6));
             newReceipt.Code = code;
 
             //Create new receipt
-            var receipt = receiptRepo.CreateReceipt(newReceipt);
+            var receipt = ReceiptRepo.CreateReceipt(newReceipt);
 
             //Update ticket status
-            var newStatus = ticketStatusRepo.UpdateTicketStatus(ticket.UserAuthId, ticket.Code, departureDate, ticket.DepartureTime, (int)TicketStatusConstant.Booked);
+            var newStatus = TicketStatusRepo.UpdateTicketStatus(ticket.UserAuthId, ticket.Code, departureDate, ticket.DepartureTime, (int)TicketStatusConstant.Booked);
 
             return receipt;
         }
         private IReceipt PayReceipt(PayReceipt request)
         {
             //Check receipt is available
-            var existingReceipt = receiptRepo.GetReceipt(request.Code);
+            var existingReceipt = ReceiptRepo.GetReceipt(request.Code);
             if (existingReceipt == null)
             {
 //                throw new Exception(ReceiptMessage.ReceiptDoesNotExist);
             }
 
             //Check ticket is available
-            var ticket = ticketRepo.GetTicket(existingReceipt.TicketId);
+            var ticket = TicketRepo.GetTicket(existingReceipt.TicketId);
             if (ticket == null)
             {
 //                throw new Exception(TicketMessage.TicketDoesNotFound);
             }
 
             //Check ticket does not sold before
-            var status = ticketStatusRepo.GetTicketStatus(ticket.UserAuthId, ticket.Code, existingReceipt.DepartureDate, ticket.DepartureTime);
+            var status = TicketStatusRepo.GetTicketStatus(ticket.UserAuthId, ticket.Code, existingReceipt.DepartureDate, ticket.DepartureTime);
             if (status.Status.Equals((int)TicketStatusConstant.Sold))
             {
 //                throw new Exception(TicketMessage.TickerIsSold);
             }
 
             //Update receipt
-            var newReceipt = receiptRepo.UpdateReceipt(existingReceipt, ToPayReceipt(existingReceipt, request));
+            var newReceipt = ReceiptRepo.UpdateReceipt(existingReceipt, ToPayReceipt(existingReceipt, request));
 
             //Update ticket status
-            var newStatus = ticketStatusRepo.UpdateTicketStatus(ticket.UserAuthId, ticket.Code, newReceipt.DepartureDate, ticket.DepartureTime, (int)TicketStatusConstant.Sold);
+            var newStatus = TicketStatusRepo.UpdateTicketStatus(ticket.UserAuthId, ticket.Code, newReceipt.DepartureDate, ticket.DepartureTime, (int)TicketStatusConstant.Sold);
 
             return newReceipt;
         }
@@ -138,29 +138,29 @@ namespace Agency.ServiceInterface
         private IReceipt CancelReceipt(CancelReceipt request)
         {
             //Check receipt is available
-            var existingReceipt = receiptRepo.GetReceipt(request.Code);
+            var existingReceipt = ReceiptRepo.GetReceipt(request.Code);
             if (existingReceipt == null)
             {
 //                throw new Exception(ReceiptMessage.ReceiptDoesNotExist);
             }
             //Check ticket is available
-            var ticket = ticketRepo.GetTicket(existingReceipt.TicketId);
+            var ticket = TicketRepo.GetTicket(existingReceipt.TicketId);
             if (ticket == null)
             {
 //                throw new Exception(TicketMessage.TicketDoesNotFound);
             }
             //Check ticket does not sold before
-            var status = ticketStatusRepo.GetTicketStatus(ticket.UserAuthId, ticket.Code, existingReceipt.DepartureDate, ticket.DepartureTime);
+            var status = TicketStatusRepo.GetTicketStatus(ticket.UserAuthId, ticket.Code, existingReceipt.DepartureDate, ticket.DepartureTime);
             if (status.Status.Equals((int)TicketStatusConstant.Sold))
             {
 //                throw new Exception(TicketMessage.TickerIsSold);
             }
 
             //Update receipt
-            var newReceipt = receiptRepo.UpdateReceipt(existingReceipt, ToCancelReceipt(existingReceipt, request));
+            var newReceipt = ReceiptRepo.UpdateReceipt(existingReceipt, ToCancelReceipt(existingReceipt, request));
 
             //Update ticket status
-            var newStatus = ticketStatusRepo.UpdateTicketStatus(ticket.UserAuthId, ticket.Code, newReceipt.DepartureDate, ticket.DepartureTime, (int)TicketStatusConstant.Available);
+            var newStatus = TicketStatusRepo.UpdateTicketStatus(ticket.UserAuthId, ticket.Code, newReceipt.DepartureDate, ticket.DepartureTime, (int)TicketStatusConstant.Available);
 
             return newReceipt;
         }

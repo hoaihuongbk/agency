@@ -8,7 +8,7 @@
         public string MqKey { get; set; }
     }
 
-    public class SendMqSMS
+    public class SendMqSms
     {
         public string Phone { get; set; }
         public string Message { get; set; }

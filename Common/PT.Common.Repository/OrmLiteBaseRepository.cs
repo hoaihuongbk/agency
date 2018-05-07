@@ -9,20 +9,20 @@ namespace PT.Common.Repository
 {
     public class OrmLiteBaseRepository
     {
-        private readonly IDbConnectionFactory dbFactory;
+        private readonly IDbConnectionFactory _dbFactory;
         public string NamedConnection { get; private set; }
 
         public OrmLiteBaseRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
         {
-            this.dbFactory = dbFactory;
+            this._dbFactory = dbFactory;
             this.NamedConnection = namedConnnection;
         }
 
         protected IDbConnection OpenDbConnection()
         {
             return this.NamedConnection != null
-                ? dbFactory.OpenDbConnection(NamedConnection)
-                : dbFactory.OpenDbConnection();
+                ? _dbFactory.OpenDbConnection(NamedConnection)
+                : _dbFactory.OpenDbConnection();
         }
 
         public void Exec(Action<IDbConnection> fn)
