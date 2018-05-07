@@ -12,9 +12,12 @@ using ServiceStack.Logging;
 using Sima.Common.Logging;
 using ServiceStack.Auth;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Sima.Common.Plugin;
 using Agency.RepositoryInterface;
 using Agency.Repository;
+using ServiceStack.DataAnnotations;
+using Sima.Common.Helper;
 
 namespace Agency
 {
@@ -30,9 +33,39 @@ namespace Agency
         public override void OnBeforeInit()
         {
             base.OnBeforeInit();
-            //typeof(RegisterService).AddAttributes(new RestrictAttribute() { VisibilityTo = RequestAttributes.None });
-            //typeof(GetApiKeysService).AddAttributes(new RestrictAttribute() { VisibilityTo = RequestAttributes.None });
-            //typeof(RegenerateApiKeysService).AddAttributes(new RestrictAttribute() { VisibilityTo = RequestAttributes.None });
+
+            var userAuthType = typeof(UserAuth);
+            userAuthType.AddAttributes(new AliasAttribute("tbl_user_auth"));
+            foreach (var prop in userAuthType.GetProperties())
+            {
+                prop.AddAttributes(new AliasAttribute(prop.Name.ToUnderscoreCase()));
+            }
+
+            var apiKeyType = typeof(ApiKey);
+            apiKeyType.AddAttributes(new AliasAttribute("tbl_api_key"));
+            foreach (var prop in apiKeyType.GetProperties())
+            {
+                prop.AddAttributes(new AliasAttribute(prop.Name.ToUnderscoreCase()));
+            }
+            
+            var userAuthRoleType = typeof(UserAuthRole);
+            userAuthRoleType.AddAttributes(new AliasAttribute("tbl_user_auth_role"));
+            foreach (var prop in userAuthRoleType.GetProperties())
+            {
+                prop.AddAttributes(new AliasAttribute(prop.Name.ToUnderscoreCase()));
+            }
+            
+            var userAuthDetails = typeof(UserAuthDetails);
+            userAuthDetails.AddAttributes(new AliasAttribute("tbl_user_auth_details"));
+            foreach (var prop in userAuthDetails.GetProperties())
+            {
+                prop.AddAttributes(new AliasAttribute(prop.Name.ToUnderscoreCase()));
+            }
+
+
+//            typeof(RegisterService).AddAttributes(new RestrictAttribute() { VisibilityTo = RequestAttributes.None });
+//            typeof(GetApiKeysService).AddAttributes(new RestrictAttribute() { VisibilityTo = RequestAttributes.None });
+//            typeof(RegenerateApiKeysService).AddAttributes(new RestrictAttribute() { VisibilityTo = RequestAttributes.None });
         }
 
         /// <summary>
@@ -99,7 +132,7 @@ namespace Agency
             
 #if DEBUG
             var sentinelHosts = new[] { connections.GetValueOrDefault("Sentinel0"), connections.GetValueOrDefault("Sentinel1"), connections.GetValueOrDefault("Sentinel2") };
-            var sentinel = new RedisSentinel(sentinelHosts, masterName: "mymaster");
+            var sentinel = new RedisSentinel(sentinelHosts, masterName: appSettings.GetString("redis.mastername"));
             sentinel.RedisManagerFactory = (master, slaves) => new RedisManagerPool(master, new RedisPoolConfig()
             {
                 MaxPoolSize = 20
@@ -119,7 +152,7 @@ namespace Agency
         {
             var connections = appSettings.Get<Dictionary<string, string>>("connectionStrings");
             
-            var dbFactory = new OrmLiteConnectionFactory(connections.GetValueOrDefault("Agency"), SqlServerDialect.Provider);
+            var dbFactory = new OrmLiteConnectionFactory(connections.GetValueOrDefault("Agency"), MySqlDialect.Provider);
             container.Register<IDbConnectionFactory>(dbFactory);
 
             //Repositories
@@ -182,7 +215,10 @@ namespace Agency
             Plugins.Add(new RegistrationFeature());
 
             //Store User Data into the referenced SQl server
-            var repo = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>());
+            var repo = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>())
+            {
+                UseDistinctRoleTables = true
+            };
             container.Register<IAuthRepository>(c => repo);
             container.Register<IUserAuthRepository>(c => repo);
             repo.InitSchema();

@@ -1,4 +1,5 @@
-﻿using ServiceStack;
+﻿using System.Linq;
+using ServiceStack;
 using ServiceStack.Configuration;
 using Sima.Common.Constant;
 
@@ -16,6 +17,9 @@ namespace Sima.Common.Helper
         {
             var key = "{0}.pattern".Fmt(prefix.Trim());
             return ConfigUtils.GetAppSetting(key, CommonConstant.Pattern[prefix.Trim()]);
+        }
+        public static string ToUnderscoreCase(this string str) {
+            return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToLower();
         }
     }
 }
