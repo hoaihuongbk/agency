@@ -10,19 +10,13 @@ namespace Agency.ServiceInterface
     [RequiredRole("Admin")]
     public class ManageService : AuthOnlyService
     {
-        public IOperatorAgentRepository OaRepo { get; set; }
+        private IOperatorAgentRepository OaRepo { get; set; }
 
         public object Post(AssignOperatorAgent request)
         {
             var eoa = OaRepo.GetOperatorAgent(request.OperatorId, request.AgentId);
             IOperatorAgent oa;
-            if (eoa == null)
-            {
-                oa = OaRepo.CreateOperatorAgent(ToCreateOa(request));
-            } else
-            {
-                oa = OaRepo.UpdateOperatorAgent(eoa, ToUpdateStatusOa(eoa, (int)DataStatus.Enabled));
-            }
+            oa = eoa == null ? OaRepo.CreateOperatorAgent(ToCreateOa(request)) : OaRepo.UpdateOperatorAgent(eoa, ToUpdateStatusOa(eoa, (int)DataStatus.Enabled));
             return new AssignOperatorAgentResponse()
             {
                 Status = (int)CommonStatus.Success

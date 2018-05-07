@@ -8,10 +8,10 @@ using ServiceStack;
 
 namespace Agency
 {
-    public class Startup
+    public abstract class Startup
     {
-        public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration) => Configuration = configuration;
+        private IConfiguration Configuration { get; }
+        protected Startup(IConfiguration configuration) => Configuration = configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
