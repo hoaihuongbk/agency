@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Agency
 {
-    public static class Program
+    public class Program
     {
         public static void Main(string[] args)
         {
             BuildWebHost(args).Run();
         }
 
-        private static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())

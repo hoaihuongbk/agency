@@ -64,7 +64,8 @@ namespace Agency.ServiceInterface
             }
 
             //Check departure date
-            if (!DateTime.TryParseExact(request.DepartureDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var departureDate))
+            DateTime departureDate;
+            if (!DateTime.TryParseExact(request.DepartureDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out departureDate))
             {
 //                throw new Exception(TicketMessage.InvalidDepartureDate);
             }

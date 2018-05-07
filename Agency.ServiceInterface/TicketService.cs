@@ -13,14 +13,15 @@ namespace Agency.ServiceInterface
    
     public class TicketService : AuthOnlyService
     {
-        private ITicketRepository TicketRepo { get; set; }
-        private ITicketAgentRepository TicketAgentRepo { get; set; }
-        private ITicketStatusRepository TicketStatusRepo { get; set; }
+        public ITicketRepository TicketRepo { get; set; }
+        public ITicketAgentRepository TicketAgentRepo { get; set; }
+        public ITicketStatusRepository TicketStatusRepo { get; set; }
 
         [RequiredRole("Agent")]
         public object Any(GetTickets request)
         {
-            if(!DateTime.TryParseExact(request.DepartureDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault, out var departureDate))
+            DateTime departureDate;
+            if(!DateTime.TryParseExact(request.DepartureDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault, out departureDate))
             {
 //                throw new Exception(TicketMessage.InvalidDepartureDate);
             }
