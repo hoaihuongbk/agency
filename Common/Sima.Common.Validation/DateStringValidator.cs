@@ -14,7 +14,7 @@ namespace Sima.Common.Validation
 
         public DateStringValidator()
         {
-            pattern = CommonConstant.Pattern["date"];
+            pattern = CommonConstant.Pattern.GetValueOrDefault("date");
         }
         public DateStringValidator(string _pattern)
         {
@@ -22,7 +22,7 @@ namespace Sima.Common.Validation
         }
         public DateStringValidator(IAppSettings appSettings)
         {
-            pattern = appSettings.Get("date.pattern", CommonConstant.Pattern["date"]);
+            pattern = appSettings.Get("date.pattern", CommonConstant.Pattern.GetValueOrDefault("date"));
         }
 
         public bool ValidDateString(string dateStr, bool required = false)

@@ -41,32 +41,15 @@ namespace Agency
         /// </summary>
         public override void Configure(Container container)
         {
-            var appSettings = new AppSettings();
+            var appSettings = base.AppSettings;
 
             JsConfig.EmitCamelCaseNames = true;
             JsConfig<DateTime>.SerializeFn = dateObj => string.Format("{0:yyyy-MM-ddTHH:mm:ss.000}", dateObj);
             JsConfig<TimeSpan>.SerializeFn = timeSpan => string.Format("{0:00}:{1:00}", timeSpan.Hours, timeSpan.Minutes);
             JsConfig<DBNull>.SerializeFn = dbNull => string.Empty;
-
-
-#if DEBUG
-            var sentinelHosts = new[] { ConfigUtils.GetConnectionString("Sentinel0"), ConfigUtils.GetConnectionString("Sentinel1"), ConfigUtils.GetConnectionString("Sentinel2") };
-            var sentinel = new RedisSentinel(sentinelHosts, masterName: "mymaster");
-            sentinel.RedisManagerFactory = (master, slaves) => new RedisManagerPool(master, new RedisPoolConfig()
-            {
-                MaxPoolSize = 20
-            });
-            sentinel.HostFilter = host => "{0}?db=0".Fmt(host);
-            container.Register<IRedisClientsManager>(c => sentinel.Start());
-#else
-            var redisManager = new RedisManagerPool(ConfigUtils.GetConnectionString("Sentinel0"), new RedisPoolConfig() {
-                MaxPoolSize = 20,
-            });
-            container.Register<IRedisClientsManager>(c => redisManager);
-#endif
-
-
+        
             //Configuring
+            ConfigureRedis(container, appSettings);
             ConfigureDb(container, appSettings);
             ConfigureLogging(container, appSettings);
             ConfigureAuth(container, appSettings);
@@ -110,12 +93,34 @@ namespace Agency
         //        : base.GetDbConnection(req);
         //}
 
+        private void ConfigureRedis(Container container, IAppSettings appSettings)
+        {
+            var connections = appSettings.Get<Dictionary<string, string>>("connectionStrings");
+            
+#if DEBUG
+            var sentinelHosts = new[] { connections.GetValueOrDefault("Sentinel0"), connections.GetValueOrDefault("Sentinel1"), connections.GetValueOrDefault("Sentinel2") };
+            var sentinel = new RedisSentinel(sentinelHosts, masterName: "mymaster");
+            sentinel.RedisManagerFactory = (master, slaves) => new RedisManagerPool(master, new RedisPoolConfig()
+            {
+                MaxPoolSize = 20
+            });
+            sentinel.HostFilter = host => "{0}?db=0".Fmt(host);
+            container.Register<IRedisClientsManager>(c => sentinel.Start());
+#else
+            var redisManager = new RedisManagerPool(connections.GetValueOrDefault("Sentinel0"), new RedisPoolConfig() {
+                MaxPoolSize = 20,
+            });
+            container.Register<IRedisClientsManager>(c => redisManager);
+#endif
+
+        }
+        
         private void ConfigureDb(Container container, IAppSettings appSettings)
         {
-            var dbFactory = new OrmLiteConnectionFactory(
-          ConfigUtils.GetConnectionString("Agency"), SqlServerDialect.Provider);
+            var connections = appSettings.Get<Dictionary<string, string>>("connectionStrings");
+            
+            var dbFactory = new OrmLiteConnectionFactory(connections.GetValueOrDefault("Agency"), SqlServerDialect.Provider);
             container.Register<IDbConnectionFactory>(dbFactory);
-            //dbFactory.RegisterConnection("Agency_Test", ConfigUtils.GetConnectionString("Agency_Test"), SqlServerDialect.Provider);
 
             //Repositories
             container.RegisterAutoWiredType(typeof(ITicket), typeof(Ticket));

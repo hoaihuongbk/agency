@@ -1,6 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,7 +7,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Agency.ServiceInterface</RootNamespace>
     <AssemblyName>Agency.ServiceInterface</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -30,106 +28,29 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.4.5.0\lib\net45\ServiceStack.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.Client, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Client.4.5.0\lib\net45\ServiceStack.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.Common, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Common.4.5.0\lib\net45\ServiceStack.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=4.0.0.0, Culture=neutral, PublicKeyToken=e06fbc6124f57c43, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Interfaces.4.5.0\lib\portable-wp80+sl5+net45+win8+wpa81+monotouch+monoandroid+xamarin.ios10\ServiceStack.Interfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.OrmLite.4.5.0\lib\net45\ServiceStack.OrmLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.Text, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Text.4.5.0\lib\net45\ServiceStack.Text.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Compile Remove="Resources\ManageMessage.Designer.cs" />
+    <Compile Remove="Resources\ReceiptMessage.Designer.cs" />
+    <Compile Remove="Resources\TicketMessage.Designer.cs" />
+    <Compile Remove="Resources\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ReceiptService.cs" />
-    <Compile Include="ManageService.cs" />
-    <Compile Include="Resources\ManageMessage.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ManageMessage.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\ReceiptMessage.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ReceiptMessage.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\TicketMessage.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TicketMessage.resx</DependentUpon>
-    </Compile>
-    <Compile Include="SettingServices.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TicketService.cs" />
+    <ProjectReference Include="..\Common\Sima.Common.Constant\Sima.Common.Constant.csproj" />
+    <ProjectReference Include="..\Common\Sima.Common.Model\Sima.Common.Model.csproj" />
+    <ProjectReference Include="..\Common\Sima.Common.Service\Sima.Common.Service.csproj" />
+    <ProjectReference Include="..\Agency.RepositoryInterface\Agency.RepositoryInterface.csproj" />
+    <ProjectReference Include="..\Agency.Repository\Agency.Repository.csproj" />
+    <ProjectReference Include="..\Agency.ServiceModel\Agency.ServiceModel.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <EmbeddedResource Remove="Resources\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Sima.Common.Constant\Sima.Common.Constant.csproj">
-      <Project>{ACEE9EAD-1F80-4801-9F58-D8F55D8AE7BD}</Project>
-      <Name>Sima.Common.Constant</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\Sima.Common.Model\Sima.Common.Model.csproj">
-      <Project>{fab869c5-9913-4548-8c65-b9b8ecdcc89e}</Project>
-      <Name>Sima.Common.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\Sima.Common.Service\Sima.Common.Service.csproj">
-      <Project>{9130237D-6859-4407-A357-0726200409B8}</Project>
-      <Name>Sima.Common.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Agency.RepositoryInterface\Agency.RepositoryInterface.csproj">
-      <Project>{A36EEA84-5BC4-410B-9CE0-187451D98C8E}</Project>
-      <Name>Agency.RepositoryInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Agency.Repository\Agency.Repository.csproj">
-      <Project>{1e270088-1c3a-4e86-b489-6fa1f27a8f39}</Project>
-      <Name>Agency.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Agency.ServiceModel\Agency.ServiceModel.csproj">
-      <Project>{53E82AC1-DD1D-4C66-B55F-F9F4ACFB2F40}</Project>
-      <Name>Agency.ServiceModel</Name>
-    </ProjectReference>
+    <None Remove="Resources\**" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\ManageMessage.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ManageMessage.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ReceiptMessage.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ReceiptMessage.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\TicketMessage.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TicketMessage.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

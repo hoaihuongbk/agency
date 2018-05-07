@@ -1,6 +1,5 @@
 ﻿using Agency.Repository;
 using Agency.RepositoryInterface;
-using Agency.ServiceInterface.Resources;
 using Agency.ServiceModel;
 using ServiceStack;
 using Sima.Common.Constant;
@@ -35,7 +34,7 @@ namespace Agency.ServiceInterface
             var eoa = oaRepo.GetOperatorAgent(request.OperatorId, request.AgentId);
             if(eoa == null)
             {
-                throw new System.Exception(ManageMessage.OADoesNotExist);
+//                throw new System.Exception(ManageMessage.OADoesNotExist);
             }
             var oa = oaRepo.UpdateOperatorAgent(eoa, ToUpdateStatusOA(eoa, (int)DataStatus.Disabled));
             return new AssignOperatorAgentResponse()

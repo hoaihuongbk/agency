@@ -1,7 +1,6 @@
 ﻿using Sima.Common.Constant;
 using Sima.Common.Model;
 using Sima.Common.Model.Types;
-using Sima.Common.Service.Resources;
 using ServiceStack;
 using ServiceStack.Redis;
 using System;
@@ -47,7 +46,7 @@ namespace Sima.Common.Service
                     return new ConvertResponse<List<State>>()
                     {
                         Status = (int)CommonStatus.NotFound,
-                        Message = CommonMessage.NoData
+//                        Message = CommonMessage.NoData
                     };
                 }
 
@@ -64,7 +63,7 @@ namespace Sima.Common.Service
             return new ConvertResponse<List<State>>()
             {
                 Status = (int)CommonStatus.UndefinedError,
-                Message = CommonMessage.SystemError
+//                Message = CommonMessage.SystemError
             };
         }
         public object Any(GetCities request)
@@ -99,7 +98,7 @@ namespace Sima.Common.Service
                     return new ConvertResponse<List<City>>()
                     {
                         Status = (int)CommonStatus.NotFound,
-                        Message = CommonMessage.NoData
+//                        Message = CommonMessage.NoData
                     };
                 }
 
@@ -116,7 +115,7 @@ namespace Sima.Common.Service
             return new ConvertResponse<List<City>>()
             {
                 Status = (int)CommonStatus.UndefinedError,
-                Message = CommonMessage.SystemError
+//                Message = CommonMessage.SystemError
             };
         }
     }

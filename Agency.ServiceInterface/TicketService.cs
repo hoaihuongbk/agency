@@ -1,5 +1,4 @@
 ﻿using Agency.RepositoryInterface;
-using Agency.ServiceInterface.Resources;
 using Agency.ServiceModel;
 using ServiceStack;
 using Sima.Common.Constant;
@@ -24,12 +23,12 @@ namespace Agency.ServiceInterface
             DateTime departureDate;
             if(!DateTime.TryParseExact(request.DepartureDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault, out departureDate))
             {
-                throw new Exception(TicketMessage.InvalidDepartureDate);
+//                throw new Exception(TicketMessage.InvalidDepartureDate);
             }
             var tickets = ticketAgentRepo.GetTickets(Convert.ToInt32(UserSession.UserAuthId), departureDate, request.NumRowPerPage, request.Page).ToList();
             if (tickets.IsNullOrEmpty())
             {
-                throw new Exception(TicketMessage.TicketDoesNotFound);
+//                throw new Exception(TicketMessage.TicketDoesNotFound);
             }
 
             //Map with status
@@ -79,7 +78,7 @@ namespace Agency.ServiceInterface
             var existingTicket = ticketRepo.GetTicket(request.Id);
             if(existingTicket == null)
             {
-                throw new Exception(TicketMessage.TicketDoesNotFound);
+//                throw new Exception(TicketMessage.TicketDoesNotFound);
             }
             var ticket = ticketRepo.UpdateTicket(existingTicket, ToUpdateTicket(existingTicket, request));
 

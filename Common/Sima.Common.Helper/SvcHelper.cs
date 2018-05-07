@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Sima.Common.Helper
 {
@@ -26,6 +25,8 @@ namespace Sima.Common.Helper
                         try
                         {
                             var propertyInfo = obj.GetType().GetProperty(properties[i].Name);
+                            if(propertyInfo == null)
+                                continue;
                             var t = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
                             var safeValue = (item[i] == null) ? null : Convert.ChangeType(item[i], t);
                             propertyInfo.SetValue(obj, safeValue, null);
@@ -66,8 +67,9 @@ namespace Sima.Common.Helper
             {
                 var list = new List<T>();
 
-                foreach (var row in table.AsEnumerable())
+                for(var i = 0; i < table.Rows.Count; i++)
                 {
+                    var row = table.Rows[i];
                     var obj = new T();
 
                     foreach (var prop in obj.GetType().GetProperties())
@@ -75,6 +77,8 @@ namespace Sima.Common.Helper
                         try
                         {
                             var propertyInfo = obj.GetType().GetProperty(prop.Name);
+                            if(propertyInfo == null)
+                                continue;
                             var t = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
                             var safeValue = (row[prop.Name] == null) ? null : Convert.ChangeType(row[prop.Name], t);
                             propertyInfo.SetValue(obj, safeValue, null);
@@ -182,12 +186,15 @@ namespace Sima.Common.Helper
         }
         public static T ToObject<T>(this Dictionary<string, string> dict)
         {
-            Type type = typeof(T);
+            var type = typeof(T);       
             var obj = Activator.CreateInstance(type);
 
             foreach (var kv in dict)
             {
-                type.GetProperty(kv.Key).SetValue(obj, kv.Value);
+                var o = type.GetProperty(kv.Key);
+                if(o == null)
+                    continue;
+                o.SetValue(obj, kv.Value);
             }
             return (T)obj;
         }

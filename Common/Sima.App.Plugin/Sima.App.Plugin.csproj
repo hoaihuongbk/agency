@@ -1,6 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,7 +7,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sima.App.Plugin</RootNamespace>
     <AssemblyName>Sima.App.Plugin</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+   <TargetFramework>net452</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -31,34 +29,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\BMS\packages\ServiceStack.4.5.0\lib\net45\ServiceStack.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.Client, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\BMS\packages\ServiceStack.Client.4.5.0\lib\net45\ServiceStack.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.Common, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\BMS\packages\ServiceStack.Common.4.5.0\lib\net45\ServiceStack.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=4.0.0.0, Culture=neutral, PublicKeyToken=e06fbc6124f57c43, processorArchitecture=MSIL">
-      <HintPath>..\..\BMS\packages\ServiceStack.Interfaces.4.5.0\lib\portable-wp80+sl5+net45+win8+wpa81+monotouch+monoandroid+xamarin.ios10\ServiceStack.Interfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\BMS\packages\ServiceStack.OrmLite.4.5.0\lib\net45\ServiceStack.OrmLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite.SqlServer, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\BMS\packages\ServiceStack.OrmLite.SqlServer.4.5.0\lib\net45\ServiceStack.OrmLite.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack.Text, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\BMS\packages\ServiceStack.Text.4.5.0\lib\net45\ServiceStack.Text.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -77,24 +47,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PT.Common.Repository.OrmLite\PT.Common.Repository.OrmLite.csproj">
-      <Project>{90084881-c514-41d2-bbbd-06c5cc1b457f}</Project>
-      <Name>PT.Common.Repository.OrmLite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PT.Common.Repository\PT.Common.Repository.csproj">
-      <Project>{51D2F778-E09D-4BA8-AFF7-6E2BC331C67B}</Project>
-      <Name>PT.Common.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sima.App.Repository.OrmLite\Sima.App.Repository.OrmLite.csproj">
-      <Project>{565D2606-3E21-475C-9B96-9B639DA52A8B}</Project>
-      <Name>Sima.App.Repository.OrmLite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sima.App.Repository\Sima.App.Repository.csproj">
-      <Project>{1D8D1795-43A9-4377-AEDD-E3DB0F3B9E4F}</Project>
-      <Name>Sima.App.Repository</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\PT.Common.Repository.OrmLite\PT.Common.Repository.OrmLite.csproj"/>
+    <ProjectReference Include="..\PT.Common.Repository\PT.Common.Repository.csproj"/>
+    <ProjectReference Include="..\Sima.App.Repository.OrmLite\Sima.App.Repository.OrmLite.csproj"/>
+    <ProjectReference Include="..\Sima.App.Repository\Sima.App.Repository.csproj"/>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

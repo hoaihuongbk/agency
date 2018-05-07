@@ -14,7 +14,7 @@ namespace Sima.Common.Validation
 
         public TimeStringValidator()
         {
-            pattern = CommonConstant.Pattern["time"];
+            pattern = CommonConstant.Pattern.GetValueOrDefault("time");
         }
         public TimeStringValidator(string _pattern)
         {
@@ -22,7 +22,7 @@ namespace Sima.Common.Validation
         }
         public TimeStringValidator(IAppSettings appSettings)
         {
-            pattern = appSettings.Get("time.pattern", CommonConstant.Pattern["time"]);
+            pattern = appSettings.Get("time.pattern", CommonConstant.Pattern.GetValueOrDefault("time"));
         }
 
         public bool ValidTimeString(string timeStr, bool required = false)

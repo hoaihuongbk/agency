@@ -1,5 +1,4 @@
 ﻿using Agency.RepositoryInterface;
-using Agency.ServiceInterface.Resources;
 using Agency.ServiceModel;
 using ServiceStack;
 using ServiceStack.Configuration;
@@ -57,25 +56,25 @@ namespace Agency.ServiceInterface
             var ticket = ticketRepo.GetTicket(request.TicketId);
             if (ticket == null)
             {
-                throw new Exception(TicketMessage.TicketDoesNotFound);
+//                throw new Exception(TicketMessage.TicketDoesNotFound);
             }
             if (ticket.Status.Equals((int)TicketConstant.Lock))
             {
-                throw new Exception(TicketMessage.TicketIsNotAvail);
+//                throw new Exception(TicketMessage.TicketIsNotAvail);
             }
 
             //Check departure date
             DateTime departureDate;
             if (!DateTime.TryParseExact(request.DepartureDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out departureDate))
             {
-                throw new Exception(TicketMessage.InvalidDepartureDate);
+//                throw new Exception(TicketMessage.InvalidDepartureDate);
             }
 
             //Check ticket does not booking before
             var status = ticketStatusRepo.GetTicketStatus(ticket.UserAuthId, ticket.Code, departureDate, ticket.DepartureTime);
             if (status.Status != (int)TicketStatusConstant.Available)
             {
-                throw new Exception(TicketMessage.TicketIsNotAvail);
+//                throw new Exception(TicketMessage.TicketIsNotAvail);
             }
 
             //Create new receipt
@@ -104,21 +103,21 @@ namespace Agency.ServiceInterface
             var existingReceipt = receiptRepo.GetReceipt(request.Code);
             if (existingReceipt == null)
             {
-                throw new Exception(ReceiptMessage.ReceiptDoesNotExist);
+//                throw new Exception(ReceiptMessage.ReceiptDoesNotExist);
             }
 
             //Check ticket is available
             var ticket = ticketRepo.GetTicket(existingReceipt.TicketId);
             if (ticket == null)
             {
-                throw new Exception(TicketMessage.TicketDoesNotFound);
+//                throw new Exception(TicketMessage.TicketDoesNotFound);
             }
 
             //Check ticket does not sold before
             var status = ticketStatusRepo.GetTicketStatus(ticket.UserAuthId, ticket.Code, existingReceipt.DepartureDate, ticket.DepartureTime);
             if (status.Status.Equals((int)TicketStatusConstant.Sold))
             {
-                throw new Exception(TicketMessage.TickerIsSold);
+//                throw new Exception(TicketMessage.TickerIsSold);
             }
 
             //Update receipt
@@ -142,19 +141,19 @@ namespace Agency.ServiceInterface
             var existingReceipt = receiptRepo.GetReceipt(request.Code);
             if (existingReceipt == null)
             {
-                throw new Exception(ReceiptMessage.ReceiptDoesNotExist);
+//                throw new Exception(ReceiptMessage.ReceiptDoesNotExist);
             }
             //Check ticket is available
             var ticket = ticketRepo.GetTicket(existingReceipt.TicketId);
             if (ticket == null)
             {
-                throw new Exception(TicketMessage.TicketDoesNotFound);
+//                throw new Exception(TicketMessage.TicketDoesNotFound);
             }
             //Check ticket does not sold before
             var status = ticketStatusRepo.GetTicketStatus(ticket.UserAuthId, ticket.Code, existingReceipt.DepartureDate, ticket.DepartureTime);
             if (status.Status.Equals((int)TicketStatusConstant.Sold))
             {
-                throw new Exception(TicketMessage.TickerIsSold);
+//                throw new Exception(TicketMessage.TickerIsSold);
             }
 
             //Update receipt

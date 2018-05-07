@@ -14,7 +14,7 @@ namespace Sima.Common.Validation
         private string pattern { get; set; }
         public PhoneValidator()
         {
-            pattern = CommonConstant.Pattern["phone"];
+            pattern = CommonConstant.Pattern.GetValueOrDefault("phone");
         }
         public PhoneValidator(string _pattern)
         {
@@ -22,7 +22,7 @@ namespace Sima.Common.Validation
         }
         public PhoneValidator(IAppSettings appSettings)
         {
-            pattern = appSettings.Get("phone.pattern", CommonConstant.Pattern["phone"]);
+            pattern = appSettings.Get("phone.pattern", CommonConstant.Pattern.GetValueOrDefault("phone"));
         }
 
         public bool ValidPhone(string phone, bool required = false)

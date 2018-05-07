@@ -1,8 +1,6 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using ServiceStack;
 using ServiceStack.Testing;
-using Agency.ServiceModel;
 using Agency.ServiceInterface;
 
 namespace Agency.Tests
