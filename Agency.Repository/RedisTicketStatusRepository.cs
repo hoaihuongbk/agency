@@ -11,7 +11,7 @@ namespace Agency.Repository
 
         public RedisTicketStatusRepository(IRedisClientsManager clientManager)
         {
-            this._clientManager = clientManager;
+            _clientManager = clientManager;
         }
 
         public ITicketStatus GetTicketStatus(int operatorId, string code, DateTime departureDate, string departureTime)

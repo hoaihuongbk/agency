@@ -3,7 +3,7 @@ using System;
 
 namespace Agency.Repository
 {
-    public class RedisTicketStatusExtensions
+    public static class RedisTicketStatusExtensions
     {
         public static string GetTicketStatusKey(int operatorId, DateTime departureDate, string departureTime)
         {

@@ -10,7 +10,7 @@ namespace Sima.Common.Logging
 
         public SlackLogger(string incomingWebHookUrl)
         {
-            this.IncomingWebHookUrl = incomingWebHookUrl;
+            IncomingWebHookUrl = incomingWebHookUrl;
         }
 
 

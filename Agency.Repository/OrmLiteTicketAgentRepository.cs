@@ -1,24 +1,22 @@
 ﻿using Agency.RepositoryInterface;
-using PT.Common.Repository;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PT.Common.Repository.OrmLite;
 
 namespace Agency.Repository
 {
     public class OrmLiteTicketAgentRepository : OrmLiteTicketAgentRepository<TicketAgent>
     {
         public OrmLiteTicketAgentRepository(IDbConnectionFactory dbFactory) : base(dbFactory) { }
-        public OrmLiteTicketAgentRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
-            : base(dbFactory, namedConnnection) { }
     }
 
     public class OrmLiteTicketAgentRepository<TTicketAgent> : OrmLiteBaseRepository, ITicketAgentRepository
           where TTicketAgent : class, ITicketAgent
     {
-        public OrmLiteTicketAgentRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
+        protected OrmLiteTicketAgentRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
        : base(dbFactory, namedConnnection)
         {
 

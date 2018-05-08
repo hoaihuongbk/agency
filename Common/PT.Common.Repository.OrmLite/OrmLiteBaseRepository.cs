@@ -1,31 +1,31 @@
-﻿using ServiceStack;
+﻿using System;
+using System.Data;
+using ServiceStack;
 using ServiceStack.Auth;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using System;
-using System.Data;
 
-namespace PT.Common.Repository
+namespace PT.Common.Repository.OrmLite
 {
     public class OrmLiteBaseRepository
     {
         private readonly IDbConnectionFactory _dbFactory;
-        public string NamedConnection { get; private set; }
+        private string NamedConnection { get; }
 
-        public OrmLiteBaseRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
+        protected OrmLiteBaseRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
         {
-            this._dbFactory = dbFactory;
-            this.NamedConnection = namedConnnection;
+            _dbFactory = dbFactory;
+            NamedConnection = namedConnnection;
         }
 
-        protected IDbConnection OpenDbConnection()
+        private IDbConnection OpenDbConnection()
         {
-            return this.NamedConnection != null
+            return NamedConnection != null
                 ? _dbFactory.OpenDbConnection(NamedConnection)
                 : _dbFactory.OpenDbConnection();
         }
 
-        public void Exec(Action<IDbConnection> fn)
+        protected void Exec(Action<IDbConnection> fn)
         {
             using (var db = OpenDbConnection())
             {
@@ -33,7 +33,7 @@ namespace PT.Common.Repository
             }
         }
 
-        public T Exec<T>(Func<IDbConnection, T> fn)
+        protected T Exec<T>(Func<IDbConnection, T> fn)
         {
             using (var db = OpenDbConnection())
             {

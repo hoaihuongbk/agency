@@ -73,7 +73,7 @@ namespace Agency
         /// </summary>
         public override void Configure(Container container)
         {
-            var appSettings = base.AppSettings;
+            var appSettings = AppSettings;
 
             JsConfig.EmitCamelCaseNames = true;
             JsConfig<DateTime>.SerializeFn = dateObj => string.Format("{0:yyyy-MM-ddTHH:mm:ss.000}", dateObj);

@@ -6,6 +6,7 @@ using ServiceStack.OrmLite;
 using System;
 using System.Data;
 using System.Linq;
+using PT.Common.Repository.OrmLite;
 
 namespace Agency.Repository
 {
@@ -14,46 +15,15 @@ namespace Agency.Repository
         public OrmLiteOperatorAgentRepository(IDbConnectionFactory dbFactory) : base(dbFactory)
         {
         }
-
-        public OrmLiteOperatorAgentRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
-            : base(dbFactory, namedConnnection)
-        {
-        }
     }
 
-    public class OrmLiteOperatorAgentRepository<TOperatorAgent> : IOperatorAgentRepository, IRequiresSchema, IClearable
+    public class OrmLiteOperatorAgentRepository<TOperatorAgent> : OrmLiteBaseRepository, IOperatorAgentRepository, IRequiresSchema, IClearable
         where TOperatorAgent : class, IOperatorAgent
     {
-        private readonly IDbConnectionFactory _dbFactory;
-        public string NamedConnection { get; private set; }
-
         protected OrmLiteOperatorAgentRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
+            : base(dbFactory, namedConnnection)
         {
-            this._dbFactory = dbFactory;
-            this.NamedConnection = namedConnnection;
-        }
-
-        protected IDbConnection OpenDbConnection()
-        {
-            return this.NamedConnection != null
-                ? _dbFactory.OpenDbConnection(NamedConnection)
-                : _dbFactory.OpenDbConnection();
-        }
-
-        protected void Exec(Action<IDbConnection> fn)
-        {
-            using (var db = OpenDbConnection())
-            {
-                fn(db);
-            }
-        }
-
-        protected T Exec<T>(Func<IDbConnection, T> fn)
-        {
-            using (var db = OpenDbConnection())
-            {
-                return fn(db);
-            }
+            
         }
 
         public virtual IOperatorAgent CreateOperatorAgent(IOperatorAgent newOperatorAgent)
@@ -73,10 +43,10 @@ namespace Agency.Repository
             });
         }
 
-        protected void AssertNoExistingOperatorAgent(IDbConnection db, IOperatorAgent newOperatorAgent,
+        private void AssertNoExistingOperatorAgent(IDbConnection db, IOperatorAgent newOperatorAgent,
             IOperatorAgent exceptForExistingOperatorAgent = null)
         {
-            var existingOperatorAgent = GetOperatorAgent(newOperatorAgent.Id);
+            var existingOperatorAgent = GetOperatorAgent(db, newOperatorAgent.Id);
             if (existingOperatorAgent != null
                 && (exceptForExistingOperatorAgent == null ||
                     existingOperatorAgent.Id != exceptForExistingOperatorAgent.Id))
@@ -102,17 +72,17 @@ namespace Agency.Repository
 
         public virtual IOperatorAgent GetOperatorAgent(int id)
         {
-            return Exec(db => { return db.Select<TOperatorAgent>(c => c.Id == id).FirstOrDefault(); });
+            return Exec(db => GetOperatorAgent(db, id));
+        }
+
+        private static IOperatorAgent GetOperatorAgent(IDbConnection db, int id)
+        {
+            return db.Select<TOperatorAgent>(c => c.Id == id).FirstOrDefault(); 
         }
 
         public virtual void InitSchema()
         {
             Exec(db => { db.CreateTableIfNotExists<TOperatorAgent>(); });
-        }
-
-        public virtual void DropAndReCreateTables()
-        {
-            Exec(db => { db.DropAndCreateTable<TOperatorAgent>(); });
         }
 
         public virtual IOperatorAgent UpdateOperatorAgent(IOperatorAgent existingOperatorAgent,

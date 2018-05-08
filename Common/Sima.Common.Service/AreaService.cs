@@ -20,7 +20,7 @@ namespace Sima.Common.Service
             try
             {
                 List<State> states;
-                using(var client = base.TryResolve<IRedisClientsManager>().GetClient())
+                using(var client = TryResolve<IRedisClientsManager>().GetClient())
                 {
                     var hashId = "state";
                     states = client.GetAllEntriesFromHash(hashId).Select(c => new State() {
@@ -71,7 +71,7 @@ namespace Sima.Common.Service
             try
             {
                 List<City> cities;
-                using (var client = base.TryResolve<IRedisClientsManager>().GetClient())
+                using (var client = TryResolve<IRedisClientsManager>().GetClient())
                 {
                     var hashId = "cities:{0}".Fmt(request.StateId);
                     cities = client.GetAllEntriesFromHash(hashId).Select(c => new City()

@@ -7,118 +7,86 @@ using Sima.Common.Helper;
 using System;
 using System.Data;
 using System.Linq;
+using PT.Common.Repository.OrmLite;
+
 namespace Agency.Repository
 {
     public class OrmLiteReceiptRepository : OrmLiteReceiptRepository<Receipt>
     {
-        public OrmLiteReceiptRepository(IDbConnectionFactory dbFactory) : base(dbFactory) { }
-        public OrmLiteReceiptRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
-            : base(dbFactory, namedConnnection) { }
+        public OrmLiteReceiptRepository(IDbConnectionFactory dbFactory) : base(dbFactory)
+        {
+        }
     }
 
-	public class OrmLiteReceiptRepository<TReceipt > : IReceiptRepository, IRequiresSchema, IClearable
-        
-		 where TReceipt : class, IReceipt   		
-		    {
-		private readonly IDbConnectionFactory _dbFactory;
-        public string NamedConnection { get; private set; }
-		
-		public OrmLiteReceiptRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
+    public class OrmLiteReceiptRepository<TReceipt> : OrmLiteBaseRepository, IReceiptRepository, IRequiresSchema,
+        IClearable
+        where TReceipt : class, IReceipt
+    {
+        protected OrmLiteReceiptRepository(IDbConnectionFactory dbFactory, string namedConnnection = null)
+            : base(dbFactory, namedConnnection)
         {
-            this._dbFactory = dbFactory;
-            this.NamedConnection = namedConnnection;
         }
 
-        protected IDbConnection OpenDbConnection()
-        {
-            return this.NamedConnection != null
-                ? _dbFactory.OpenDbConnection(NamedConnection)
-                : _dbFactory.OpenDbConnection();
-        }
 
-        protected void Exec(Action<IDbConnection> fn)
-        {
-            using (var db = OpenDbConnection())
-            {
-                fn(db);
-            }
-        }
-
-        protected T Exec<T>(Func<IDbConnection, T> fn)
-        {
-            using (var db = OpenDbConnection())
-            {
-                return fn(db);
-            }
-        }
-
-		public virtual IReceipt CreateReceipt(IReceipt newReceipt)
+        public virtual IReceipt CreateReceipt(IReceipt newReceipt)
         {
             return Exec(db =>
             {
                 AssertNoExistingReceipt(db, newReceipt);
 
-				newReceipt.Status = 1;
+                newReceipt.Status = 1;
                 newReceipt.IsPrgCreatedDate = DateTime.Now;
                 newReceipt.IsPrgUpdatedDate = newReceipt.IsPrgCreatedDate;
 
-                db.Save((TReceipt)newReceipt);
+                db.Save((TReceipt) newReceipt);
 
                 newReceipt = db.SingleById<TReceipt>(newReceipt.Id);
                 return newReceipt;
             });
         }
 
-		protected void AssertNoExistingReceipt(IDbConnection db, IReceipt newReceipt, IReceipt exceptForExistingReceipt = null)
+        private static void AssertNoExistingReceipt(IDbConnection db, IReceipt newReceipt,
+            IReceipt exceptForExistingReceipt = null)
         {
-            var existingReceipt = GetReceipt(newReceipt.Id);
+            var existingReceipt = GetReceipt(db, newReceipt.Id);
             if (existingReceipt != null
                 && (exceptForExistingReceipt == null || existingReceipt.Id != exceptForExistingReceipt.Id))
                 throw new ArgumentException("Receipt is already exists");
         }
 
-		public virtual void DeleteReceipt(int id)
+        public virtual void DeleteReceipt(int id)
         {
             Exec(db =>
             {
                 using (var trans = db.OpenTransaction())
                 {
-					var item = GetReceipt(id);
-					
+                    var item = GetReceipt(id);
+
                     item.Status = 0;
                     item.IsPrgUpdatedDate = DateTime.Now;
-                    db.Save((TReceipt)item);
+                    db.Save((TReceipt) item);
 
                     trans.Commit();
                 }
             });
         }
 
-		public virtual IReceipt GetReceipt(int id)
+        public virtual IReceipt GetReceipt(int id)
         {
-            return Exec(db =>
-            {
-                return db.Select<TReceipt>(c => c.Id == id).FirstOrDefault();
-            });
+            return Exec(db => GetReceipt(db, id));
         }
 
-		public virtual void InitSchema()
+        private static IReceipt GetReceipt(IDbConnection db, int id)
         {
-            Exec(db =>
-            {
-									 db.CreateTableIfNotExists<TReceipt>();
-				            });
+            return db.Select<TReceipt>(c => c.Id == id).FirstOrDefault();
         }
 
-		public virtual void DropAndReCreateTables()
+        public virtual void InitSchema()
         {
-            Exec(db =>
-            {
-									 db.DropAndCreateTable<TReceipt>();
-				            });
+            Exec(db => { db.CreateTableIfNotExists<TReceipt>(); });
         }
 
-		public virtual IReceipt UpdateReceipt(IReceipt existingReceipt, IReceipt newReceipt)
+        public virtual IReceipt UpdateReceipt(IReceipt existingReceipt, IReceipt newReceipt)
         {
             return Exec(db =>
             {
@@ -126,16 +94,14 @@ namespace Agency.Repository
 
                 using (var trans = db.OpenTransaction())
                 {
-					
                     newReceipt.Id = existingReceipt.Id;
                     newReceipt.IsPrgCreatedDate = existingReceipt.IsPrgCreatedDate;
                     newReceipt.IsPrgUpdatedDate = DateTime.Now;
 
-                    db.Save((TReceipt)newReceipt);
+                    db.Save((TReceipt) newReceipt);
 
                     trans.Commit();
                 }
-
 
 
                 return newReceipt;
@@ -144,10 +110,7 @@ namespace Agency.Repository
 
         public void Clear()
         {
-            Exec(db =>
-            {
-									 db.DeleteAll<TReceipt>();
-				            });
+            Exec(db => { db.DeleteAll<TReceipt>(); });
         }
 
         public string GenerateNewCode(int len = 6)
@@ -159,16 +122,14 @@ namespace Agency.Repository
                 {
                     code = SvcHelper.GetUniqueKey(len);
                 } while (db.Exists<TReceipt>(c => c.Code == code));
+
                 return code;
             });
         }
 
         public IReceipt GetReceipt(string code)
         {
-            return Exec(db =>
-            {
-                return db.Select<TReceipt>(c => c.Code == code.Trim()).FirstOrDefault();
-            });
+            return Exec(db => { return db.Select<TReceipt>(c => c.Code == code.Trim()).FirstOrDefault(); });
         }
     }
 }

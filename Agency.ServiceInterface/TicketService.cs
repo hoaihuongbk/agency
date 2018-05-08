@@ -13,15 +13,21 @@ namespace Agency.ServiceInterface
    
     public class TicketService : AuthOnlyService
     {
-        public ITicketRepository TicketRepo { get; set; }
-        public ITicketAgentRepository TicketAgentRepo { get; set; }
-        public ITicketStatusRepository TicketStatusRepo { get; set; }
+        private ITicketRepository TicketRepo { get; }
+        private ITicketAgentRepository TicketAgentRepo { get; }
+        private ITicketStatusRepository TicketStatusRepo { get; }
 
+        public TicketService(ITicketStatusRepository ticketStatusRepo, ITicketAgentRepository ticketAgentRepo, ITicketRepository ticketRepo)
+        {
+            TicketStatusRepo = ticketStatusRepo;
+            TicketAgentRepo = ticketAgentRepo;
+            TicketRepo = ticketRepo;
+        }
+        
         [RequiredRole("Agent")]
         public object Any(GetTickets request)
         {
-            DateTime departureDate;
-            if(!DateTime.TryParseExact(request.DepartureDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault, out departureDate))
+            if(!DateTime.TryParseExact(request.DepartureDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault, out var departureDate))
             {
 //                throw new Exception(TicketMessage.InvalidDepartureDate);
             }
@@ -110,7 +116,7 @@ namespace Agency.ServiceInterface
 
             return ticket;
         }
-        private ITicket ToUpdateTicket(ITicket existingTicket, UpdateTicket request)
+        private static ITicket ToUpdateTicket(ITicket existingTicket, UpdateTicket request)
         {
             DateTime? fromDate = null, toDate = null;
             if (!string.IsNullOrEmpty(request.StartDate))
