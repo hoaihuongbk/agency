@@ -61,7 +61,7 @@ namespace Agency
             {
                 prop.AddAttributes(new AliasAttribute(prop.Name.ToUnderscoreCase()));
             }
-
+            
 
 //            typeof(RegisterService).AddAttributes(new RestrictAttribute() { VisibilityTo = RequestAttributes.None });
 //            typeof(GetApiKeysService).AddAttributes(new RestrictAttribute() { VisibilityTo = RequestAttributes.None });
