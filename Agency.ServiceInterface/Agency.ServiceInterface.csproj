@@ -41,7 +41,6 @@
     <ProjectReference Include="..\Common\Sima.Common.Constant\Sima.Common.Constant.csproj" />
     <ProjectReference Include="..\Common\Sima.Common.Model\Sima.Common.Model.csproj" />
     <ProjectReference Include="..\Common\Sima.Common.Service\Sima.Common.Service.csproj" />
-    <ProjectReference Include="..\Agency.RepositoryInterface\Agency.RepositoryInterface.csproj" />
     <ProjectReference Include="..\Agency.Repository\Agency.Repository.csproj" />
     <ProjectReference Include="..\Agency.ServiceModel\Agency.ServiceModel.csproj" />
   </ItemGroup>

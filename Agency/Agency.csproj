@@ -46,7 +46,6 @@
     <ProjectReference Include="..\Common\PT.Common.Repository\PT.Common.Repository.csproj" />
     <ProjectReference Include="..\Common\Sima.Common.Logging\Sima.Common.Logging.csproj" />
     <ProjectReference Include="..\Common\Sima.Common.Plugin\Sima.Common.Plugin.csproj" />
-    <ProjectReference Include="..\Agency.RepositoryInterface\Agency.RepositoryInterface.csproj" />
     <ProjectReference Include="..\Agency.Repository\Agency.Repository.csproj" />
     <ProjectReference Include="..\Agency.ServiceInterface\Agency.ServiceInterface.csproj" />
     <ProjectReference Include="..\Agency.ServiceModel\Agency.ServiceModel.csproj" />

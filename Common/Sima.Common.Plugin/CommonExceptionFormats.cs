@@ -2,6 +2,7 @@
 using ServiceStack;
 using ServiceStack.Logging;
 using ServiceStack.Text;
+using Sima.Common.Helper.Utils;
 
 namespace Sima.Common.Plugin
 {

@@ -1,11 +1,12 @@
-﻿using Agency.RepositoryInterface;
-using Agency.ServiceModel;
+﻿using Agency.ServiceModel;
 using ServiceStack;
 using ServiceStack.Configuration;
 using Sima.Common.Constant;
 using Sima.Common.Service;
 using System;
 using System.Globalization;
+using Agency.Repository;
+using Agency.Repository.OrmLite;
 
 namespace Agency.ServiceInterface
 {
@@ -90,9 +91,9 @@ namespace Agency.ServiceInterface
             }
 
             //Create new receipt
-            var newReceipt = new Repository.Receipt();
+            var newReceipt = new Receipt();
             newReceipt.PopulateWith(ticket);
-            newReceipt.AgentId = Convert.ToInt32(UserSession.UserAuthId);
+            newReceipt.AgentId = Convert.ToInt32(base.UserSession.UserAuthId);
             newReceipt.DepartureDate = departureDate;
             newReceipt.Note = request.Note;
             newReceipt.Status = (int) ReceiptStatusConstant.Submited;
@@ -147,7 +148,7 @@ namespace Agency.ServiceInterface
 
         private static IReceipt ToPayReceipt(IReceipt existingReceipt, PayReceipt request)
         {
-            var receipt = ((Repository.Receipt) existingReceipt).CreateCopy();
+            var receipt = ((Receipt) existingReceipt).CreateCopy();
             receipt.Status = (int) ReceiptStatusConstant.Paid;
             receipt.Note = request.Note;
             return receipt;
@@ -189,7 +190,7 @@ namespace Agency.ServiceInterface
 
         private static IReceipt ToCancelReceipt(IReceipt existingReceipt, CancelReceipt request)
         {
-            var receipt = ((Repository.Receipt) existingReceipt).CreateCopy();
+            var receipt = ((Receipt) existingReceipt).CreateCopy();
             receipt.Status = (int) ReceiptStatusConstant.Cancelled;
             receipt.Note = request.Note;
             return receipt;

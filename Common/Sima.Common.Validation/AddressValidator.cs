@@ -1,9 +1,5 @@
 ﻿namespace Sima.Common.Validation
 {
-    public interface IAddressValidator
-    {
-        bool ValidAddress(string address, bool required = false);
-    }
     public class AddressValidator : IAddressValidator
     {
         private const int MinLength = 5;

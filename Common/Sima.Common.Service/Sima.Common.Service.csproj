@@ -36,7 +36,6 @@
     <Compile Remove="Resources\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PT.Common.Repository.OrmLite\PT.Common.Repository.OrmLite.csproj" />
     <ProjectReference Include="..\PT.Common.Repository\PT.Common.Repository.csproj" />
     <ProjectReference Include="..\Sima.Common.Constant\Sima.Common.Constant.csproj" />
     <ProjectReference Include="..\Sima.Common.Model\Sima.Common.Model.csproj" />

@@ -1,5 +1,5 @@
 ﻿using Agency.Repository;
-using Agency.RepositoryInterface;
+using Agency.Repository.OrmLite;
 using Agency.ServiceModel;
 using ServiceStack;
 using Sima.Common.Constant;

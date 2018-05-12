@@ -1,9 +1,9 @@
-﻿using Sima.Common.Constant;
-using Sima.Common.Model.Types;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
+using Sima.Common.Constant;
+using Sima.Common.Model.Types;
 
-namespace Sima.Common.Helper
+namespace Sima.Common.Helper.Utils
 {
     public static class CommonUtils
     {

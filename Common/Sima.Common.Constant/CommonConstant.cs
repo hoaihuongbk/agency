@@ -2,13 +2,6 @@
 
 namespace Sima.Common.Constant
 {
-    public enum CommonStatus
-    {
-        UndefinedError = 0,
-        Success = 1,
-        NotFound = 2
-    }
-
     public class CommonConstant
     {
         public static Dictionary<string, string> Pattern = new Dictionary<string, string>()

@@ -13,8 +13,9 @@ using Sima.Common.Logging;
 using ServiceStack.Auth;
 using System.Collections.Generic;
 using Sima.Common.Plugin;
-using Agency.RepositoryInterface;
 using Agency.Repository;
+using Agency.Repository.OrmLite;
+using Agency.Repository.Redis;
 using ServiceStack.DataAnnotations;
 using Sima.Common.Helper;
 

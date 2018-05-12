@@ -4,10 +4,6 @@ using System.Text.RegularExpressions;
 
 namespace Sima.Common.Validation
 {
-    public interface ITimeStringValidator
-    {
-        bool ValidTimeString(string timeStr, bool required = false);
-    }
     public class TimeStringValidator : ITimeStringValidator
     {
         private string Pattern { get; set; }

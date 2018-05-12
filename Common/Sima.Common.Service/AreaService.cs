@@ -13,7 +13,11 @@ namespace Sima.Common.Service
 {
     public class AreaService : BaseService
     {
-        public IAreaRepository AreaRepository { get; set; }
+        private IAreaRepository AreaRepository { get; }
+        public AreaService(IAreaRepository areaRepository)
+        {
+            AreaRepository = areaRepository;
+        }
 
         public object Any(GetStates request)
         {

@@ -11,14 +11,12 @@ namespace Sima.Common.Plugin
     {
         public void Register(IAppHost appHost)
         {
-            //Common Converter
             appHost.ResponseConverters.Add((req, response) =>
             {
                 return Task.Run(() =>
                 {
                     var type = response.GetType().Name;
-                    object result = response;
-//                    var sesion = req.GetSession();
+                    var result = response;
                     switch (type)
                     {
                         case "AuthenticateResponse":

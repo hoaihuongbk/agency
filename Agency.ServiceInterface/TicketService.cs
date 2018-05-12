@@ -1,5 +1,4 @@
-﻿using Agency.RepositoryInterface;
-using Agency.ServiceModel;
+﻿using Agency.ServiceModel;
 using ServiceStack;
 using Sima.Common.Constant;
 using Sima.Common.Service;
@@ -7,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Agency.Repository;
+using Agency.Repository.OrmLite;
 
 namespace Agency.ServiceInterface
 {
@@ -108,7 +109,7 @@ namespace Agency.ServiceInterface
                 toDate = DateTime.ParseExact(request.EndDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault);
                 //throw new Exception(TicketMessage.InvalidToDate);
             }
-            var ticket = request.ConvertTo<Repository.Ticket>();
+            var ticket = request.ConvertTo<Ticket>();
             ticket.UserAuthId = Convert.ToInt32(UserSession.UserAuthId);
             ticket.FromDate = fromDate;
             ticket.ToDate = toDate;
@@ -129,7 +130,7 @@ namespace Agency.ServiceInterface
                 toDate = DateTime.ParseExact(request.EndDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault);
                 //throw new Exception(TicketMessage.InvalidToDate);
             }
-            var ticket = ((Repository.Ticket)existingTicket).CreateCopy();
+            var ticket = ((Ticket)existingTicket).CreateCopy();
             ticket.PopulateWith(request);
             ticket.FromDate = fromDate;
             ticket.ToDate = toDate;

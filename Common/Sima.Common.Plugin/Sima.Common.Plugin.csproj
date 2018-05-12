@@ -32,7 +32,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PT.Common.Repository.OrmLite\PT.Common.Repository.OrmLite.csproj" />
     <ProjectReference Include="..\PT.Common.Repository\PT.Common.Repository.csproj" />
     <ProjectReference Include="..\Sima.Common.Constant\Sima.Common.Constant.csproj" />
     <ProjectReference Include="..\Sima.Common.Helper\Sima.Common.Helper.csproj" />

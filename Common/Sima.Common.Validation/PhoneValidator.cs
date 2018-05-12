@@ -4,11 +4,6 @@ using System.Text.RegularExpressions;
 
 namespace Sima.Common.Validation
 {
-    public interface IPhoneValidator
-    {
-        bool ValidPhone(string phone, bool required = false);
-    }
-
     public class PhoneValidator : IPhoneValidator
     {
         private string Pattern { get; set; }
