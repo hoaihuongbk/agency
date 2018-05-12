@@ -42,3 +42,5 @@
 /Agency/Web.Debug.config
 /Agency/Properties/PublishProfiles
 /.idea
+/Agency.SmokeTests/bin
+/Agency.SmokeTests/obj
