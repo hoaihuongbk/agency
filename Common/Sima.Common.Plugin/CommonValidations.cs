@@ -8,14 +8,12 @@ namespace Sima.Common.Plugin
     {
         public void Register(IAppHost appHost)
         {
-            var appSettings = new AppSettings();
-
             appHost.Register<IAddressValidator>(new AddressValidator());
-            appHost.Register<IDateStringValidator>(new DateStringValidator(appSettings));
+            appHost.Register<IDateStringValidator>(new DateStringValidator(appHost.AppSettings));
             appHost.Register<IFullNameValidator>(new FullNameValidator());
             appHost.Register<IPasswordValidator>(new PasswordValidator());
-            appHost.Register<IPhoneValidator>(new PhoneValidator(appSettings));
-            appHost.Register<ITimeStringValidator>(new TimeStringValidator(appSettings));
+            appHost.Register<IPhoneValidator>(new PhoneValidator(appHost.AppSettings));
+            appHost.Register<ITimeStringValidator>(new TimeStringValidator(appHost.AppSettings));
             appHost.Register<IUserNameValidator>(new UserNameValidator());
             appHost.Register<ICustomEmailValidator>(new CustomEmailValidator());
         }

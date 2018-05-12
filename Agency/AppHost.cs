@@ -212,8 +212,9 @@ namespace Agency
                 IncludeAuthMetadataProvider = false
             });
 
-            Plugins.Add(new RegistrationFeature());
-
+//            Plugins.Add(new RegistrationFeature());
+            Plugins.Add(new UserFeature());
+            
             //Store User Data into the referenced SQl server
             var repo = new OrmLiteAuthRepository(container.Resolve<IDbConnectionFactory>())
             {

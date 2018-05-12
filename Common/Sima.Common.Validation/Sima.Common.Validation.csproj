@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sima.Common.Constant\Sima.Common.Constant.csproj" />
+    <ProjectReference Include="..\Sima.Common.Model\Sima.Common.Model.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.0.0" />

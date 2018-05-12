@@ -4,6 +4,6 @@
     {
         UndefinedError = 0,
         Success = 1,
-        NotFound = 2
+        NotFound = 2,
     }
 }

@@ -1,0 +1,63 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "/home/hoaihuongbk/projects/agency/Agency.SmokeTests/Agency.SmokeTests.csproj",
+    "projectName": "Agency.SmokeTests",
+    "projectPath": "/home/hoaihuongbk/projects/agency/Agency.SmokeTests/Agency.SmokeTests.csproj",
+    "outputPath": "/home/hoaihuongbk/projects/agency/Agency.SmokeTests/obj/",
+    "projectStyle": "PackageReference",
+    "fallbackFolders": [
+      "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+    ],
+    "originalTargetFrameworks": [
+      "netcoreapp2.1"
+    ],
+    "frameworks": {
+      "netcoreapp2.1": {
+        "projectReferences": {
+          "/home/hoaihuongbk/projects/agency/Agency.ServiceModel/Agency.ServiceModel.csproj": {
+            "projectPath": "/home/hoaihuongbk/projects/agency/Agency.ServiceModel/Agency.ServiceModel.csproj"
+          }
+        }
+      }
+    },
+    "warningProperties": {
+      "warnAsError": [
+        "NU1605"
+      ]
+    }
+  },
+  "frameworks": {
+    "netcoreapp2.1": {
+      "dependencies": {
+        "Microsoft.NET.Test.Sdk": {
+          "target": "Package",
+          "version": "[15.7.0, )"
+        },
+        "Microsoft.NETCore.App": {
+          "suppressParent": "All",
+          "target": "Package",
+          "version": "[2.1.0-preview2-26406-04, )",
+          "autoReferenced": true
+        },
+        "ServiceStack.Client": {
+          "target": "Package",
+          "version": "[5.0.0, )"
+        },
+        "xunit": {
+          "target": "Package",
+          "version": "[2.3.1, )"
+        },
+        "xunit.runner.visualstudio": {
+          "target": "Package",
+          "version": "[2.3.1, )"
+        }
+      },
+      "imports": [
+        "net461"
+      ],
+      "assetTargetFallback": true,
+      "warn": true
+    }
+  }
+}

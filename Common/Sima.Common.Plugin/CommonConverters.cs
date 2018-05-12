@@ -1,7 +1,6 @@
 ﻿using Sima.Common.Constant;
 using Sima.Common.Model.Types;
 using ServiceStack;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,15 +20,15 @@ namespace Sima.Common.Plugin
                     {
                         case "AuthenticateResponse":
                             var res = (AuthenticateResponse)response;
-                            result = new ConvertResponse<AuthenticateResponse>
+                            result = new CustomAuthenticateResponse
                             {
-                                Status = !string.IsNullOrEmpty(res.SessionId) ? 1 : 0,
+                                Status = !string.IsNullOrEmpty(res.SessionId) ? (int)CommonStatus.Success : (int)CommonStatus.UndefinedError,
                                 Data = res
                             };
                             break;
                         case "RegenerateApiKeysResponse":
                             var res1 = (RegenerateApiKeysResponse)response;
-                            result = new ConvertResponse<List<UserApiKey>>
+                            result = new CustomGetApiKeysResponse
                             {
                                 Status = res1.Results.Any() ? (int)CommonStatus.Success : (int)CommonStatus.UndefinedError,
                                 Data = res1.Results
@@ -37,10 +36,18 @@ namespace Sima.Common.Plugin
                             break;
                         case "GetApiKeysResponse":
                             var res2 = (GetApiKeysResponse)response;
-                            result = new ConvertResponse<List<UserApiKey>>
+                            result = new CustomGetApiKeysResponse
                             {
                                 Status = res2.Results.Any() ? (int)CommonStatus.Success : (int)CommonStatus.UndefinedError,
                                 Data = res2.Results
+                            };
+                            break;
+                        case "RegisterResponse":
+                            var res3 = (RegisterResponse)response;
+                            result = new CustomRegisterResponse
+                            {
+                                Status = !string.IsNullOrEmpty(res3.UserId) ? (int)CommonStatus.Success : (int)CommonStatus.UndefinedError,
+                                Data = res3
                             };
                             break;
                         default:
