@@ -1,4 +1,5 @@
-﻿using ServiceStack;
+﻿using Microsoft.Extensions.Localization;
+using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.Logging;
 
@@ -6,9 +7,10 @@ namespace Sima.Common.Service
 {
     public abstract class BaseService : ServiceStack.Service
     {
-        public AuthUserSession UserSession => SessionAs<AuthUserSession>();
+        protected AuthUserSession UserSession => SessionAs<AuthUserSession>();
         public IDbConnectionFactory DbFactory { get; set; }
-        public ILog Log { get; set; }
+        protected ILog Log { get; set; }
+        protected readonly IStringLocalizer<BaseService> Localizer;
 
 //        protected string RenderRazorViewToString(string viewName, object model)
 //        {

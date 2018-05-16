@@ -1,0 +1,47 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "/home/hoaihuongbk/projects/agency/Common/Sima.Common.Resources/Sima.Common.Resources.csproj",
+    "projectName": "Sima.Common.Resources",
+    "projectPath": "/home/hoaihuongbk/projects/agency/Common/Sima.Common.Resources/Sima.Common.Resources.csproj",
+    "outputPath": "/home/hoaihuongbk/projects/agency/Common/Sima.Common.Resources/obj/",
+    "projectStyle": "PackageReference",
+    "fallbackFolders": [
+      "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+    ],
+    "originalTargetFrameworks": [
+      "netcoreapp2.1"
+    ],
+    "frameworks": {
+      "netcoreapp2.1": {
+        "projectReferences": {}
+      }
+    },
+    "warningProperties": {
+      "warnAsError": [
+        "NU1605"
+      ]
+    }
+  },
+  "frameworks": {
+    "netcoreapp2.1": {
+      "dependencies": {
+        "LocalizationProvider.AspNetCore": {
+          "target": "Package",
+          "version": "[4.1.0, )"
+        },
+        "Microsoft.NETCore.App": {
+          "suppressParent": "All",
+          "target": "Package",
+          "version": "[2.1.0-preview2-26406-04, )",
+          "autoReferenced": true
+        }
+      },
+      "imports": [
+        "net461"
+      ],
+      "assetTargetFallback": true,
+      "warn": true
+    }
+  }
+}

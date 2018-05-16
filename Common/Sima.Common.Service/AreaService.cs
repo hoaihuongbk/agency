@@ -51,6 +51,7 @@ namespace Sima.Common.Service
                     {
                         Status = (int)CommonStatus.NotFound,
 //                        Message = CommonMessage.NoData
+                        Message = Localizer["NoData"]
                     };
                 }
 
@@ -68,6 +69,7 @@ namespace Sima.Common.Service
             {
                 Status = (int)CommonStatus.UndefinedError,
 //                Message = CommonMessage.SystemError
+//                Message = Localizer.GetString(() => CommonMessage.SystemError)
             };
         }
         public object Any(GetCities request)
@@ -103,6 +105,7 @@ namespace Sima.Common.Service
                     {
                         Status = (int)CommonStatus.NotFound,
 //                        Message = CommonMessage.NoData
+                        Message = Localizer["NoData"]
                     };
                 }
 
@@ -120,6 +123,7 @@ namespace Sima.Common.Service
             {
                 Status = (int)CommonStatus.UndefinedError,
 //                Message = CommonMessage.SystemError
+                Message = Localizer["SystemError"]
             };
         }
     }

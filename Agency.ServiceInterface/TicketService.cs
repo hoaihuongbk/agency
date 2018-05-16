@@ -102,12 +102,12 @@ namespace Agency.ServiceInterface
             if (!string.IsNullOrEmpty(request.StartDate))
             {
                 fromDate = DateTime.ParseExact(request.StartDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault);
-                //throw new Exception(TicketMessage.InvalidFromDate);
+//                throw new Exception(TicketMessage.InvalidFromDate);
             }
             if (!string.IsNullOrEmpty(request.EndDate))
             {
                 toDate = DateTime.ParseExact(request.EndDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault);
-                //throw new Exception(TicketMessage.InvalidToDate);
+//                throw new Exception(TicketMessage.InvalidToDate);
             }
             var ticket = request.ConvertTo<Ticket>();
             ticket.UserAuthId = Convert.ToInt32(UserSession.UserAuthId);
@@ -123,12 +123,12 @@ namespace Agency.ServiceInterface
             if (!string.IsNullOrEmpty(request.StartDate))
             {
                 fromDate = DateTime.ParseExact(request.StartDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault);
-                //throw new Exception(TicketMessage.InvalidFromDate);
+//                throw new Exception(TicketMessage.InvalidFromDate);
             }
             if (!string.IsNullOrEmpty(request.EndDate))
             {
                 toDate = DateTime.ParseExact(request.EndDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault);
-                //throw new Exception(TicketMessage.InvalidToDate);
+//                throw new Exception(TicketMessage.InvalidToDate);
             }
             var ticket = ((Ticket)existingTicket).CreateCopy();
             ticket.PopulateWith(request);
