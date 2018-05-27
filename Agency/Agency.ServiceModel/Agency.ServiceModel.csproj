@@ -2,11 +2,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1E270088-1C3A-4E86-B489-6FA1F27A8F39}</ProjectGuid>
+    <ProjectGuid>{53E82AC1-DD1D-4C66-B55F-F9F4ACFB2F40}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Agency.Repository</RootNamespace>
-    <AssemblyName>Agency.Repository</AssemblyName>
+    <RootNamespace>Agency.ServiceModel</RootNamespace>
+    <AssemblyName>Agency.ServiceModel</AssemblyName>
     <TargetFramework>netstandard2.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,15 +32,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\PT.Common.Repository\PT.Common.Repository.csproj" />
-    <ProjectReference Include="..\Common\Sima.Common.Helper\Sima.Common.Helper.csproj" />
+    <ProjectReference Include="..\..\Common\Sima.Common.Model\Sima.Common.Model.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Redis" />
-  </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the 
-
-s below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

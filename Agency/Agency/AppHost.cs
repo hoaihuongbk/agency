@@ -106,21 +106,6 @@ namespace Agency
             Plugins.Add(new CommonFeature());
         }
 
-        //public override RouteAttribute[] GetRouteAttributes(Type requestType)
-        //{
-        //    var routes = base.GetRouteAttributes(requestType);
-        //    routes.Each(x => x.Path = "/v1" + x.Path);
-        //    return routes;
-        //}
-
-        //public override IDbConnection GetDbConnection(IRequest req = null)
-        //{
-        //    //If an API Test Key was used return DB connection to TestDb instead: 
-        //    return req.GetApiKey()?.Environment == "test"
-        //        ? TryResolve<IDbConnectionFactory>().OpenDbConnection("Agency_Test")
-        //        : base.GetDbConnection(req);
-        //}
-
         private void ConfigureRedis(Container container, IAppSettings appSettings)
         {
            Plugins.Add(new RedisFeature());
@@ -134,29 +119,11 @@ namespace Agency
             container.Register<IDbConnectionFactory>(dbFactory);
 
             //Repositories
-//            container.RegisterAutoWiredType(typeof(ITicket), typeof(Ticket));
-//            container.RegisterAutoWiredType(typeof(ITicketAgent), typeof(TicketAgent));
             container.RegisterAutoWiredType(typeof(IOperatorAgent), typeof(OperatorAgent));
-//            container.RegisterAutoWiredType(typeof(ITicketStatus), typeof(TicketStatus));
-//            container.RegisterAutoWiredType(typeof(IReceipt), typeof(Receipt));
-
-//            var repo = new OrmLiteTicketRepository(dbFactory);
-//            container.Register<ITicketRepository>(c => repo);
-//            repo.InitSchema();
-//
-//            var repo2 = new OrmLiteTicketAgentRepository(dbFactory);
-//            container.Register<ITicketAgentRepository>(c => repo2);
 
             var repo3 = new OrmLiteOperatorAgentRepository(dbFactory);
             container.Register<IOperatorAgentRepository>(c => repo3);
             repo3.InitSchema();
-
-//            var repo4 = new RedisTicketStatusRepository(container.Resolve<IRedisClientsManager>());
-//            container.Register<ITicketStatusRepository>(c => repo4);
-//
-//            var repo5 = new OrmLiteReceiptRepository(dbFactory);
-//            container.Register<IReceiptRepository>(c => repo5);
-//            repo3.InitSchema();
         }
 
         private void ConfigureLogging(Container container, IAppSettings appSettings)

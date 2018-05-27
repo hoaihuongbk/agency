@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PT.Common.Repository.OrmLite;
 using ServiceStack.Data;
-using ServiceStack.OrmLite.Legacy;
+using ServiceStack.OrmLite;
 
 namespace Ticket.Repository.OrmLite
 {
