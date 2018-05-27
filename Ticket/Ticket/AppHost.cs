@@ -1,20 +1,19 @@
-﻿using Funq;
+﻿using System;
+using System.Collections.Generic;
+using Funq;
 using ServiceStack;
-using Agency.ServiceInterface;
 using ServiceStack.Configuration;
-using System;
-using ServiceStack.Text;
-using ServiceStack.Validation;
-using ServiceStack.OrmLite;
 using ServiceStack.Data;
 using ServiceStack.Logging;
+using ServiceStack.OrmLite;
+using ServiceStack.Text;
+using ServiceStack.Validation;
 using Sima.Common.Logging;
-using System.Collections.Generic;
 using Sima.Common.Plugin;
-using Agency.Repository;
-using Agency.Repository.OrmLite;
+using Ticket.Plugin;
+using Ticket.ServiceInterface;
 
-namespace Agency
+namespace Ticket
 {
     //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyAspNet
     public class AppHost : AppHostBase
@@ -23,7 +22,7 @@ namespace Agency
         /// Base constructor requires a Name and Assembly where web service implementation is located
         /// </summary>
         public AppHost()
-            : base("Agency", typeof(SettingServices).Assembly) { }
+            : base("Agency", typeof(TicketService).Assembly) { }
 
 //        public override void OnBeforeInit()
 //        {
@@ -77,15 +76,15 @@ namespace Agency
             JsConfig<DBNull>.SerializeFn = dbNull => string.Empty;
         
             //Configuring
-            ConfigureRedis(container, appSettings);
+            ConfigureRedis(appSettings);
             ConfigureDb(container, appSettings);
+            ConfigureRepository();
             ConfigureLogging(container, appSettings);
-            ConfigureAuth(container, appSettings);
-            ConfigureFilter(container, appSettings);
-            ConfigureValidation(container, appSettings);
-            ConfigureExceptionFormat(container, appSettings);
-            ConfigureConverter(container, appSettings);
-            //ConfigureGateway(container, appSettings);
+            ConfigureAuth();
+            ConfigureFilter();
+            ConfigureValidation();
+            ConfigureExceptionFormat();
+            ConfigureConverter();
 
             SetConfig(new HostConfig
             {
@@ -106,24 +105,9 @@ namespace Agency
             Plugins.Add(new CommonFeature());
         }
 
-        //public override RouteAttribute[] GetRouteAttributes(Type requestType)
-        //{
-        //    var routes = base.GetRouteAttributes(requestType);
-        //    routes.Each(x => x.Path = "/v1" + x.Path);
-        //    return routes;
-        //}
-
-        //public override IDbConnection GetDbConnection(IRequest req = null)
-        //{
-        //    //If an API Test Key was used return DB connection to TestDb instead: 
-        //    return req.GetApiKey()?.Environment == "test"
-        //        ? TryResolve<IDbConnectionFactory>().OpenDbConnection("Agency_Test")
-        //        : base.GetDbConnection(req);
-        //}
-
-        private void ConfigureRedis(Container container, IAppSettings appSettings)
+        private void ConfigureRedis(IAppSettings appSettings)
         {
-           Plugins.Add(new RedisFeature());
+            Plugins.Add(new RedisFeature());
         }
         
         private void ConfigureDb(Container container, IAppSettings appSettings)
@@ -132,31 +116,11 @@ namespace Agency
             
             var dbFactory = new OrmLiteConnectionFactory(connections.GetValueOrDefault("Agency"), MySqlDialect.Provider);
             container.Register<IDbConnectionFactory>(dbFactory);
-
-            //Repositories
-//            container.RegisterAutoWiredType(typeof(ITicket), typeof(Ticket));
-//            container.RegisterAutoWiredType(typeof(ITicketAgent), typeof(TicketAgent));
-            container.RegisterAutoWiredType(typeof(IOperatorAgent), typeof(OperatorAgent));
-//            container.RegisterAutoWiredType(typeof(ITicketStatus), typeof(TicketStatus));
-//            container.RegisterAutoWiredType(typeof(IReceipt), typeof(Receipt));
-
-//            var repo = new OrmLiteTicketRepository(dbFactory);
-//            container.Register<ITicketRepository>(c => repo);
-//            repo.InitSchema();
-//
-//            var repo2 = new OrmLiteTicketAgentRepository(dbFactory);
-//            container.Register<ITicketAgentRepository>(c => repo2);
-
-            var repo3 = new OrmLiteOperatorAgentRepository(dbFactory);
-            container.Register<IOperatorAgentRepository>(c => repo3);
-            repo3.InitSchema();
-
-//            var repo4 = new RedisTicketStatusRepository(container.Resolve<IRedisClientsManager>());
-//            container.Register<ITicketStatusRepository>(c => repo4);
-//
-//            var repo5 = new OrmLiteReceiptRepository(dbFactory);
-//            container.Register<IReceiptRepository>(c => repo5);
-//            repo3.InitSchema();
+        }
+        
+        private void ConfigureRepository()
+        {
+           Plugins.Add(new TicketRepositoryFeature());
         }
 
         private void ConfigureLogging(Container container, IAppSettings appSettings)
@@ -165,32 +129,30 @@ namespace Agency
             container.Register<ILog>(logger);
         }
 
-        private void ConfigureAuth(Container container, IAppSettings appSettings)
+        private void ConfigureAuth()
         {
             Plugins.Add(new UserFeature());
         }
 
-        private void ConfigureFilter(Container container, IAppSettings appSettings)
+        private void ConfigureFilter()
         {
             //Common
             Plugins.Add(new CommonFilters());
         }
-        private void ConfigureValidation(Container container, IAppSettings appSettings)
+        private void ConfigureValidation()
         {
             //Common
             Plugins.Add(new CommonValidations());
         }
-        private void ConfigureExceptionFormat(Container container, IAppSettings appSettings)
+        private void ConfigureExceptionFormat()
         {
             //Common
             Plugins.Add(new CommonExceptionFormats());
         }
-        private void ConfigureConverter(Container container, IAppSettings appSettings)
+        private void ConfigureConverter()
         {
             //Common
             Plugins.Add(new CommonConverters());
         }
-
-
     }
 }

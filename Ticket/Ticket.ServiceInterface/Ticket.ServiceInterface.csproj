@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Sima.Common.Service\Sima.Common.Service.csproj" />
+    <ProjectReference Include="..\Ticket.Repository\Ticket.Repository.csproj" />
+    <ProjectReference Include="..\Ticket.ServiceModel\Ticket.ServiceModel.csproj" />
+  </ItemGroup>
+</Project>

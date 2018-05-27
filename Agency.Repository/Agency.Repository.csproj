@@ -35,6 +35,9 @@
     <ProjectReference Include="..\Common\PT.Common.Repository\PT.Common.Repository.csproj" />
     <ProjectReference Include="..\Common\Sima.Common.Helper\Sima.Common.Helper.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Redis" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the 
 
 s below and uncomment it. 
